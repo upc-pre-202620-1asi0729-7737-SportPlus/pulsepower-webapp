@@ -1,0 +1,357 @@
+{
+  "physiological-overview": {
+    "integration_available": true,
+    "connection": {
+      "id": "wearable-1",
+      "provider": "AIoTI",
+      "status": "Connected",
+      "last_synced_at": "2026-10-08T12:00:00Z"
+    },
+    "records": [
+      {
+        "id": "rhr-1",
+        "metric": "RESTING_HR",
+        "value": 57,
+        "unit": "bpm",
+        "recorded_at": "2026-10-02T11:00:00Z"
+      },
+      {
+        "id": "hrv-1",
+        "metric": "HRV",
+        "value": 62,
+        "unit": "ms",
+        "recorded_at": "2026-10-02T11:00:00Z"
+      },
+      {
+        "id": "strain-1",
+        "metric": "STRAIN",
+        "value": 9.6,
+        "unit": "pts",
+        "recorded_at": "2026-10-02T23:00:00Z"
+      },
+      {
+        "id": "rhr-2",
+        "metric": "RESTING_HR",
+        "value": 55,
+        "unit": "bpm",
+        "recorded_at": "2026-10-03T11:00:00Z"
+      },
+      {
+        "id": "hrv-2",
+        "metric": "HRV",
+        "value": 60,
+        "unit": "ms",
+        "recorded_at": "2026-10-03T11:00:00Z"
+      },
+      {
+        "id": "strain-2",
+        "metric": "STRAIN",
+        "value": 13.4,
+        "unit": "pts",
+        "recorded_at": "2026-10-03T23:00:00Z"
+      },
+      {
+        "id": "rhr-3",
+        "metric": "RESTING_HR",
+        "value": 55,
+        "unit": "bpm",
+        "recorded_at": "2026-10-04T11:00:00Z"
+      },
+      {
+        "id": "hrv-3",
+        "metric": "HRV",
+        "value": 69,
+        "unit": "ms",
+        "recorded_at": "2026-10-04T11:00:00Z"
+      },
+      {
+        "id": "strain-3",
+        "metric": "STRAIN",
+        "value": 11.2,
+        "unit": "pts",
+        "recorded_at": "2026-10-04T23:00:00Z"
+      },
+      {
+        "id": "rhr-4",
+        "metric": "RESTING_HR",
+        "value": 59,
+        "unit": "bpm",
+        "recorded_at": "2026-10-05T11:00:00Z"
+      },
+      {
+        "id": "hrv-4",
+        "metric": "HRV",
+        "value": 64,
+        "unit": "ms",
+        "recorded_at": "2026-10-05T11:00:00Z"
+      },
+      {
+        "id": "strain-4",
+        "metric": "STRAIN",
+        "value": 6.3,
+        "unit": "pts",
+        "recorded_at": "2026-10-05T23:00:00Z"
+      },
+      {
+        "id": "rhr-5",
+        "metric": "RESTING_HR",
+        "value": 58,
+        "unit": "bpm",
+        "recorded_at": "2026-10-06T11:00:00Z"
+      },
+      {
+        "id": "hrv-5",
+        "metric": "HRV",
+        "value": 71,
+        "unit": "ms",
+        "recorded_at": "2026-10-06T11:00:00Z"
+      },
+      {
+        "id": "strain-5",
+        "metric": "STRAIN",
+        "value": 6.6,
+        "unit": "pts",
+        "recorded_at": "2026-10-06T23:00:00Z"
+      },
+      {
+        "id": "rhr-6",
+        "metric": "RESTING_HR",
+        "value": 55,
+        "unit": "bpm",
+        "recorded_at": "2026-10-07T11:00:00Z"
+      },
+      {
+        "id": "hrv-6",
+        "metric": "HRV",
+        "value": 71,
+        "unit": "ms",
+        "recorded_at": "2026-10-07T11:00:00Z"
+      },
+      {
+        "id": "hr-1",
+        "metric": "HEART_RATE",
+        "value": 74,
+        "unit": "bpm",
+        "recorded_at": "2026-10-07T13:00:00Z"
+      },
+      {
+        "id": "hr-2",
+        "metric": "HEART_RATE",
+        "value": 74,
+        "unit": "bpm",
+        "recorded_at": "2026-10-07T14:00:00Z"
+      },
+      {
+        "id": "hr-3",
+        "metric": "HEART_RATE",
+        "value": 73,
+        "unit": "bpm",
+        "recorded_at": "2026-10-07T15:00:00Z"
+      },
+      {
+        "id": "hr-4",
+        "metric": "HEART_RATE",
+        "value": 64,
+        "unit": "bpm",
+        "recorded_at": "2026-10-07T16:00:00Z"
+      },
+      {
+        "id": "hr-5",
+        "metric": "HEART_RATE",
+        "value": 73,
+        "unit": "bpm",
+        "recorded_at": "2026-10-07T17:00:00Z"
+      },
+      {
+        "id": "hr-6",
+        "metric": "HEART_RATE",
+        "value": 73,
+        "unit": "bpm",
+        "recorded_at": "2026-10-07T18:00:00Z"
+      },
+      {
+        "id": "hr-7",
+        "metric": "HEART_RATE",
+        "value": 70,
+        "unit": "bpm",
+        "recorded_at": "2026-10-07T19:00:00Z"
+      },
+      {
+        "id": "hr-8",
+        "metric": "HEART_RATE",
+        "value": 64,
+        "unit": "bpm",
+        "recorded_at": "2026-10-07T20:00:00Z"
+      },
+      {
+        "id": "hr-9",
+        "metric": "HEART_RATE",
+        "value": 67,
+        "unit": "bpm",
+        "recorded_at": "2026-10-07T21:00:00Z"
+      },
+      {
+        "id": "hr-10",
+        "metric": "HEART_RATE",
+        "value": 64,
+        "unit": "bpm",
+        "recorded_at": "2026-10-07T22:00:00Z"
+      },
+      {
+        "id": "strain-6",
+        "metric": "STRAIN",
+        "value": 6.5,
+        "unit": "pts",
+        "recorded_at": "2026-10-07T23:00:00Z"
+      },
+      {
+        "id": "hr-11",
+        "metric": "HEART_RATE",
+        "value": 132,
+        "unit": "bpm",
+        "recorded_at": "2026-10-07T23:00:00Z"
+      },
+      {
+        "id": "hr-12",
+        "metric": "HEART_RATE",
+        "value": 141,
+        "unit": "bpm",
+        "recorded_at": "2026-10-08T00:00:00Z"
+      },
+      {
+        "id": "hr-13",
+        "metric": "HEART_RATE",
+        "value": 66,
+        "unit": "bpm",
+        "recorded_at": "2026-10-08T01:00:00Z"
+      },
+      {
+        "id": "hr-14",
+        "metric": "HEART_RATE",
+        "value": 72,
+        "unit": "bpm",
+        "recorded_at": "2026-10-08T02:00:00Z"
+      },
+      {
+        "id": "hr-15",
+        "metric": "HEART_RATE",
+        "value": 65,
+        "unit": "bpm",
+        "recorded_at": "2026-10-08T03:00:00Z"
+      },
+      {
+        "id": "hr-16",
+        "metric": "HEART_RATE",
+        "value": 73,
+        "unit": "bpm",
+        "recorded_at": "2026-10-08T04:00:00Z"
+      },
+      {
+        "id": "hr-17",
+        "metric": "HEART_RATE",
+        "value": 54,
+        "unit": "bpm",
+        "recorded_at": "2026-10-08T05:00:00Z"
+      },
+      {
+        "id": "hr-18",
+        "metric": "HEART_RATE",
+        "value": 58,
+        "unit": "bpm",
+        "recorded_at": "2026-10-08T06:00:00Z"
+      },
+      {
+        "id": "hr-19",
+        "metric": "HEART_RATE",
+        "value": 60,
+        "unit": "bpm",
+        "recorded_at": "2026-10-08T07:00:00Z"
+      },
+      {
+        "id": "hr-20",
+        "metric": "HEART_RATE",
+        "value": 52,
+        "unit": "bpm",
+        "recorded_at": "2026-10-08T08:00:00Z"
+      },
+      {
+        "id": "hr-21",
+        "metric": "HEART_RATE",
+        "value": 51,
+        "unit": "bpm",
+        "recorded_at": "2026-10-08T09:00:00Z"
+      },
+      {
+        "id": "hr-22",
+        "metric": "HEART_RATE",
+        "value": 59,
+        "unit": "bpm",
+        "recorded_at": "2026-10-08T10:00:00Z"
+      },
+      {
+        "id": "rhr-7",
+        "metric": "RESTING_HR",
+        "value": 59,
+        "unit": "bpm",
+        "recorded_at": "2026-10-08T11:00:00Z"
+      },
+      {
+        "id": "hrv-7",
+        "metric": "HRV",
+        "value": 61,
+        "unit": "ms",
+        "recorded_at": "2026-10-08T11:00:00Z"
+      },
+      {
+        "id": "hr-23",
+        "metric": "HEART_RATE",
+        "value": 73,
+        "unit": "bpm",
+        "recorded_at": "2026-10-08T11:00:00Z"
+      },
+      {
+        "id": "strain-7",
+        "metric": "STRAIN",
+        "value": 14.5,
+        "unit": "pts",
+        "recorded_at": "2026-10-08T12:00:00Z"
+      },
+      {
+        "id": "hr-24",
+        "metric": "HEART_RATE",
+        "value": 74,
+        "unit": "bpm",
+        "recorded_at": "2026-10-08T12:00:00Z"
+      }
+    ],
+    "recovery": {
+      "id": "recovery-1",
+      "level": 72,
+      "calculated_at": "2026-10-08T12:00:00Z",
+      "explanation": "HRV estable y frecuencia cardiaca en reposo dentro de tu rango habitual: recuperación buena."
+    },
+    "recommendations": [
+      {
+        "id": "rec-1",
+        "title": "Entrenamiento moderado",
+        "explanation": "Tu recuperación es buena, pero el esfuerzo de ayer fue alto.",
+        "suggested_action": "Mantén la intensidad planificada y evita series al máximo hoy."
+      },
+      {
+        "id": "rec-2",
+        "title": "Rutina de sueño",
+        "explanation": "Dormiste menos que tu objetivo dos de las últimas cinco noches.",
+        "suggested_action": "Intenta acostarte 30 minutos antes esta noche."
+      }
+    ],
+    "alerts": [
+      {
+        "id": "alert-1",
+        "title": "Esfuerzo elevado",
+        "message": "Tu frecuencia cardiaca superó 150 bpm durante el entrenamiento de ayer.",
+        "issued_at": "2026-10-07T20:00:00Z",
+        "reviewed_at": null
+      }
+    ]
+  }
+}
