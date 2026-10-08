@@ -1,6 +1,6 @@
 import { RouterLink } from '@angular/router';
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
-import { I18n, Translate } from '../../../../../../../../../../../../../Downloads/pulsepower-webapp/src/app/shared/application/i18n';
+import { I18n, Translate } from '../../../../../shared/application/i18n';
 
 @Component({
   selector: 'pp-auth-layout',

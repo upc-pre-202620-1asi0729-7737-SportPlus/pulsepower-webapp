@@ -1,7 +1,7 @@
 import { Injectable, inject, signal } from '@angular/core';
 import { IdentityAvailability } from '../domain/model/identity-availability';
 import { UserAccount } from '../domain/model/user-account.entity';
-import { BrowserPreferences } from '../../../../../../../../../../../Downloads/pulsepower-webapp/src/app/shared/application/ports/browser-preferences';
+import { BrowserPreferences } from '../../../shared/application/ports/browser-preferences';
 import {
   RegistrationDraft,
   registrationCredentials,

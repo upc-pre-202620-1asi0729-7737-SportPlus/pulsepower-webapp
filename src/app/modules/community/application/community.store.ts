@@ -1,7 +1,7 @@
 import { Injectable, inject, signal, computed } from '@angular/core';
-import { WorkspaceMode } from '../../../../../../../../../../../Downloads/pulsepower-webapp/src/app/shared/application/workspace-mode';
-import { ActionState } from '../../../../../../../../../../../Downloads/pulsepower-webapp/src/app/shared/application/action-state';
-import { Clock } from '../../../../../../../../../../../Downloads/pulsepower-webapp/src/app/shared/application/clock';
+import { WorkspaceMode } from '../../../shared/application/workspace-mode';
+import { ActionState } from '../../../shared/application/action-state';
+import { Clock } from '../../../shared/application/clock';
 import { Achievement } from '../domain/model/achievement.entity';
 import { SharedProgress, sharedProgress } from '../domain/model/shared-progress.entity';
 import { Streak, currentStreak } from '../domain/model/streak';

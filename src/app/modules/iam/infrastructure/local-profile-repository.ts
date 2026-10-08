@@ -1,5 +1,5 @@
 import { Injectable, inject } from '@angular/core';
-import { BrowserStorage } from '../../../../../../../../../../../Downloads/pulsepower-webapp/src/app/shared/infrastructure/browser-storage';
+import { BrowserStorage } from '../../../shared/infrastructure/browser-storage';
 import { ProfileRepository } from '../application/ports/profile-repository';
 import { UserProfile } from '../domain/model/user-profile.entity';
 import { ProfileAssembler } from './profile-assembler';

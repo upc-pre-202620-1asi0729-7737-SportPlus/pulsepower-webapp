@@ -1,4 +1,4 @@
-import { requireDate } from '../../../../../../../../../../../../Downloads/pulsepower-webapp/src/app/shared/domain/validation';
+import { requireDate } from '../../../../shared/domain/validation';
 
 export interface Streak {
   readonly days: number;

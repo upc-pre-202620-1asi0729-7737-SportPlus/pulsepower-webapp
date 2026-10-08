@@ -1,4 +1,4 @@
-import { requireText } from '../../../../../../../../../../../../Downloads/pulsepower-webapp/src/app/shared/domain/validation';
+import { requireText } from '../../../../shared/domain/validation';
 
 export interface SharedProgress {
   readonly id: string;

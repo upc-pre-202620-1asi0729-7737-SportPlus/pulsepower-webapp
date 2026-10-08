@@ -4,7 +4,7 @@ import {
   requireChoice,
   requireNumber,
   optionalText,
-} from '../../../../../../../../../../../../Downloads/pulsepower-webapp/src/app/shared/domain/validation';
+} from '../../../../shared/domain/validation';
 
 export interface UserProfile {
   readonly displayName: string;

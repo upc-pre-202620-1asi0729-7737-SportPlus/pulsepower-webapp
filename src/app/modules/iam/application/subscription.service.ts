@@ -1,4 +1,4 @@
-import { ActionState } from '../../../../../../../../../../../Downloads/pulsepower-webapp/src/app/shared/application/action-state';
+import { ActionState } from '../../../shared/application/action-state';
 import { Injectable, inject, signal } from '@angular/core';
 import { SubscriptionOverview } from '../domain/model/subscription-overview';
 export abstract class SubscriptionGateway {

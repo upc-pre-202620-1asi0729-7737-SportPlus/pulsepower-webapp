@@ -5,7 +5,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
-import { Translate } from '../../../../../../../../../../../../../Downloads/pulsepower-webapp/src/app/shared/application/i18n';
+import { Translate } from '../../../../../shared/application/i18n';
 import { IdentityService } from '../../../application/identity.service';
 import { AuthLayout } from '../../components/auth-layout/auth-layout';
 

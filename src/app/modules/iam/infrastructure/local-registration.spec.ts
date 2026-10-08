@@ -1,7 +1,7 @@
 import '@angular/compiler';
 import { beforeEach, afterEach, expect, it, vi } from 'vitest';
 import { LocalIdentityGateway } from './local-identity-gateway';
-import { BrowserStorage } from '../../../../../../../../../../../Downloads/pulsepower-webapp/src/app/shared/infrastructure/browser-storage';
+import { BrowserStorage } from '../../../shared/infrastructure/browser-storage';
 function storage(): Storage {
   const values: Record<string, string> = {};
   return Object.defineProperties(values, {

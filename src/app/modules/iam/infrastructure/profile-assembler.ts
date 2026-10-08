@@ -3,8 +3,8 @@ import {
   asArray,
   textField,
   numberField,
-} from '../../../../../../../../../../../Downloads/pulsepower-webapp/src/app/shared/infrastructure/browser-storage';
-import { requireChoice } from '../../../../../../../../../../../Downloads/pulsepower-webapp/src/app/shared/domain/validation';
+} from '../../../shared/infrastructure/browser-storage';
+import { requireChoice } from '../../../shared/domain/validation';
 import { UserProfile, userProfile } from '../domain/model/user-profile.entity';
 import { UserProfileDto } from './user-profile.dto';
 export const ProfileAssembler = {

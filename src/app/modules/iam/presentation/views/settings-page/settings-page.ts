@@ -4,19 +4,19 @@ import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatButtonModule } from '@angular/material/button';
 import { IdentityService } from '../../../application/identity.service';
-import { Translate } from '../../../../../../../../../../../../../Downloads/pulsepower-webapp/src/app/shared/application/i18n';
+import { Translate } from '../../../../../shared/application/i18n';
 import {
   NotificationPreferencesStore,
   NotificationPreferencesCommand,
-} from '../../../../../../../../../../../../../Downloads/pulsepower-webapp/src/app/shared/application/notification-preferences.store';
+} from '../../../../../shared/application/notification-preferences.store';
 import { ChangeDetectionStrategy, Component, effect, inject, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import { ProfileStore, ProfileCommand } from '../../../application/profile.store';
-import { PageHeading } from '../../../../../../../../../../../../../Downloads/pulsepower-webapp/src/app/shared/presentation/components/page-heading/page-heading';
-import { EmptyState } from '../../../../../../../../../../../../../Downloads/pulsepower-webapp/src/app/shared/presentation/components/empty-state/empty-state';
-import { Feedback } from '../../../../../../../../../../../../../Downloads/pulsepower-webapp/src/app/shared/presentation/components/feedback/feedback';
-import { Icon } from '../../../../../../../../../../../../../Downloads/pulsepower-webapp/src/app/shared/presentation/components/icon/icon';
+import { PageHeading } from '../../../../../shared/presentation/components/page-heading/page-heading';
+import { EmptyState } from '../../../../../shared/presentation/components/empty-state/empty-state';
+import { Feedback } from '../../../../../shared/presentation/components/feedback/feedback';
+import { Icon } from '../../../../../shared/presentation/components/icon/icon';
 @Component({
   selector: 'pp-settings-page',
   imports: [

@@ -1,7 +1,7 @@
 import { Injectable, computed, inject, signal } from '@angular/core';
-import { ActionState } from '../../../../../../../../../../../Downloads/pulsepower-webapp/src/app/shared/application/action-state';
-import { Clock } from '../../../../../../../../../../../Downloads/pulsepower-webapp/src/app/shared/application/clock';
-import { requireText } from '../../../../../../../../../../../Downloads/pulsepower-webapp/src/app/shared/domain/validation';
+import { ActionState } from '../../../shared/application/action-state';
+import { Clock } from '../../../shared/application/clock';
+import { requireText } from '../../../shared/domain/validation';
 import { UserProfile, userProfile } from '../domain/model/user-profile.entity';
 import { ProfileRepository } from './ports/profile-repository';
 export type ProfileCommand = { -readonly [K in keyof Omit<UserProfile, 'goals'>]: UserProfile[K] };

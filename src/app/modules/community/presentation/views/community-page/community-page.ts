@@ -2,16 +2,16 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatButtonModule } from '@angular/material/button';
-import { Translate, LocalizedDate } from '../../../../../../../../../../../../../Downloads/pulsepower-webapp/src/app/shared/application/i18n';
+import { Translate, LocalizedDate } from '../../../../../shared/application/i18n';
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { CommunityStore } from '../../../application/community.store';
-import { PageHeading } from '../../../../../../../../../../../../../Downloads/pulsepower-webapp/src/app/shared/presentation/components/page-heading/page-heading';
-import { MetricCard } from '../../../../../../../../../../../../../Downloads/pulsepower-webapp/src/app/shared/presentation/components/metric-card/metric-card';
-import { EmptyState } from '../../../../../../../../../../../../../Downloads/pulsepower-webapp/src/app/shared/presentation/components/empty-state/empty-state';
-import { FormDialog } from '../../../../../../../../../../../../../Downloads/pulsepower-webapp/src/app/shared/presentation/components/form-dialog/form-dialog';
-import { Feedback } from '../../../../../../../../../../../../../Downloads/pulsepower-webapp/src/app/shared/presentation/components/feedback/feedback';
-import { Icon } from '../../../../../../../../../../../../../Downloads/pulsepower-webapp/src/app/shared/presentation/components/icon/icon';
+import { PageHeading } from '../../../../../shared/presentation/components/page-heading/page-heading';
+import { MetricCard } from '../../../../../shared/presentation/components/metric-card/metric-card';
+import { EmptyState } from '../../../../../shared/presentation/components/empty-state/empty-state';
+import { FormDialog } from '../../../../../shared/presentation/components/form-dialog/form-dialog';
+import { Feedback } from '../../../../../shared/presentation/components/feedback/feedback';
+import { Icon } from '../../../../../shared/presentation/components/icon/icon';
 @Component({
   selector: 'pp-community-page',
   imports: [

@@ -1,4 +1,4 @@
-import { asRecord, textField } from '../../../../../../../../../../../Downloads/pulsepower-webapp/src/app/shared/infrastructure/browser-storage';
+import { asRecord, textField } from '../../../shared/infrastructure/browser-storage';
 import { SharedProgress, sharedProgress } from '../domain/model/shared-progress.entity';
 import { SharedProgressDto } from './shared-progress.dto';
 export const CommunityAssembler = {

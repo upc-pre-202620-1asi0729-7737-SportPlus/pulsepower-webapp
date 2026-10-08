@@ -1,8 +1,8 @@
 import { ActivityHistory } from '../application/ports/community-ports';
 import { currentStreak } from '../domain/model/streak';
-import { Clock } from '../../../../../../../../../../../Downloads/pulsepower-webapp/src/app/shared/application/clock';
+import { Clock } from '../../../shared/application/clock';
 import { Injectable, inject } from '@angular/core';
-import { BrowserStorage, asArray } from '../../../../../../../../../../../Downloads/pulsepower-webapp/src/app/shared/infrastructure/browser-storage';
+import { BrowserStorage, asArray } from '../../../shared/infrastructure/browser-storage';
 import { CommunityRepository } from '../application/ports/community-ports';
 import { Achievement } from '../domain/model/achievement.entity';
 import { SharedProgress } from '../domain/model/shared-progress.entity';

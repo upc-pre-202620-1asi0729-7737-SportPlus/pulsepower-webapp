@@ -2,8 +2,8 @@ import { Injectable, inject } from '@angular/core';
 import { SubscriptionGateway } from '../application/subscription.service';
 import { SubscriptionOverview } from '../domain/model/subscription-overview';
 import { Subscription } from '../domain/model/subscription.entity';
-import { BrowserStorage } from '../../../../../../../../../../../Downloads/pulsepower-webapp/src/app/shared/infrastructure/browser-storage';
-import { Clock } from '../../../../../../../../../../../Downloads/pulsepower-webapp/src/app/shared/application/clock';
+import { BrowserStorage } from '../../../shared/infrastructure/browser-storage';
+import { Clock } from '../../../shared/application/clock';
 @Injectable()
 export class LocalSubscriptionGateway extends SubscriptionGateway {
   private readonly storage = inject(BrowserStorage);
