@@ -1,0 +1,97 @@
+.calendar-toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+  gap: 16px;
+}
+.calendar-toolbar p {
+  font-size: 12px;
+}
+.week-grid {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  gap: 12px;
+}
+.day-column header {
+  text-align: center;
+  padding: 14px;
+  border-bottom: 2px solid var(--border);
+  margin-bottom: 12px;
+}
+.day-column header span {
+  display: block;
+  font-size: 11px;
+  text-transform: uppercase;
+  color: var(--muted);
+  font-weight: 600;
+}
+.day-column header strong {
+  font-size: 24px;
+}
+.day-column.today header {
+  color: #159f90;
+  border-color: var(--turquoise);
+}
+.day-body {
+  min-height: 255px;
+  border: 1px dashed #dce3ed;
+  border-radius: 13px;
+  padding: 8px;
+}
+.activity {
+  border-radius: 9px;
+  padding: 12px 10px;
+  margin-bottom: 8px;
+  background: white;
+  border-left: 3px solid #8b5cf6;
+  box-shadow: 0 2px 8px #101b3505;
+}
+.activity.rest {
+  border-left-color: var(--turquoise);
+}
+.activity h3 {
+  font-size: 12px;
+  overflow-wrap: anywhere;
+}
+.activity p {
+  font-size: 10px;
+  margin: 5px 0;
+}
+.activity-actions {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  margin-top: 8px;
+  gap: 4px;
+}
+.activity-actions button {
+  font-size: 10px;
+  border: 0;
+  background: none;
+  color: var(--muted);
+  padding: 0;
+}
+.add-day {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 50px;
+  border: 0;
+  background: transparent;
+  color: #adb8c6;
+}
+@media (max-width: 1000px) {
+  .week-grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+@media (max-width: 600px) {
+  .week-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .day-body {
+    min-height: 160px;
+  }
+}

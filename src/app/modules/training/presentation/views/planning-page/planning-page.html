@@ -1,0 +1,209 @@
+<pp-page-heading
+  [title]="'Planning' | t"
+  [description]="'Make room for movement and recovery.' | t"
+  [eyebrow]="'YOUR WEEK, YOUR PACE' | t"
+  ><button mat-flat-button class="btn primary" (click)="open(editor)">
+    <pp-icon name="plus" /> {{ 'Add workout' | t }}
+  </button></pp-page-heading
+>
+<pp-feedback [error]="store.error()" [message]="store.message()" />
+<section class="panel mb">
+  <h2>{{ 'Weekly progress' | t }}</h2>
+  <p>
+    {{ 'Days with training' | t }}: {{ store.weeklyProgress().recorded | t }} ·
+    {{ 'Active rest' | t }}: {{ store.weeklyProgress().activeRest | t }} ·
+    {{ 'Days without a record' | t }}: {{ store.weeklyProgress().withoutRecord | t }}
+  </p>
+  <small>{{
+    'Only elapsed days are counted. Planned active rest is excluded from days without a record.' | t
+  }}</small>
+</section>
+<div class="calendar-toolbar">
+  <div>
+    <h2>{{ 'Week of' | t }} {{ store.days()[0] | localDate: 'MMMM d' | t }}</h2>
+    <p>{{ store.days()[0] | localDate: 'y' | t }}</p>
+  </div>
+  <div class="row-actions">
+    <button
+      mat-button
+      class="btn secondary small"
+      [attr.aria-label]="'Previous week' | t"
+      (click)="store.weekOffset.update(previous)"
+    >
+      ←</button
+    ><button mat-button class="btn secondary small" (click)="store.weekOffset.set(0)">
+      {{ 'This week' | t }}</button
+    ><button
+      mat-button
+      class="btn secondary small"
+      [attr.aria-label]="'Next week' | t"
+      (click)="store.weekOffset.update(next)"
+    >
+      →
+    </button>
+  </div>
+</div>
+<div class="week-grid">
+  @for (day of store.days(); track day) {
+    <section class="day-column" [class.today]="day === store.today">
+      <header>
+        <span>{{ day | localDate: 'EEE' | t }}</span
+        ><strong>{{ day | localDate: 'd' | t }}</strong>
+      </header>
+      <div class="day-body">
+        @for (activity of store.activities(); track activity.id) {
+          @if (activity.date === day && activity.status !== 'Cancelled') {
+            <article class="activity" [class.rest]="activity.kind === 'Active rest'">
+              <h3>{{ activity.activity | t }}</h3>
+              <p>{{ activity.startTime ?? 'Time not set' | t }}</p>
+              <p>
+                {{ activity.durationMinutes | t }} {{ 'min ·' | t }} {{ activity.intensity | t }}
+              </p>
+              <span class="badge" [class.green]="activity.status === 'Completed'">{{
+                (activity.kind === 'Active rest' ? 'Active rest' : activity.status) | t
+              }}</span>
+              @if (activity.status === 'Planned') {
+                <div class="activity-actions">
+                  <button (click)="edit(editor, activity)">{{ 'Reschedule' | t }}</button
+                  ><button (click)="store.cancelActivity(activity.id)" [disabled]="store.busy()">
+                    {{ 'Cancel' | t }}
+                  </button>
+                </div>
+              }
+            </article>
+          }
+        }
+        <button
+          class="add-day"
+          [attr.aria-label]="'Add activity on ' + day | t"
+          (click)="open(editor, day)"
+        >
+          <pp-icon name="plus" />
+        </button>
+      </div>
+    </section>
+  }
+</div>
+<div class="notice mt">
+  <pp-icon name="calendar" />
+  <div>
+    <strong>{{ 'Plans and completed sessions are separate' | t }}</strong
+    >{{ 'After your workout,' | t }} <a routerLink="/training">{{ 'log a session' | t }}</a>
+    {{
+      'and select its planned activity to mark it completed. Active rest stays visible in your plan.'
+        | t
+    }}
+  </div>
+</div>
+<pp-form-dialog #editor [title]="(editingId() ? 'Reschedule activity' : 'Plan an activity') | t">
+  <pp-feedback [error]="store.error()" />
+  <form #planForm="ngForm" (ngSubmit)="save(editor)">
+    @if (store.scheduleConflicts().length) {
+      <div class="notice">
+        <div>
+          <p>{{ 'Overlapping activities' | t }}</p>
+          @for (conflict of store.scheduleConflicts(); track conflict.id) {
+            <p>{{ conflict.activity }} · {{ conflict.date }} · {{ conflict.startTime }}</p>
+          }
+          <mat-checkbox name="acceptOverlap" [(ngModel)]="acceptOverlap">
+            {{ 'I reviewed the overlap; save anyway' | t }}</mat-checkbox
+          >
+        </div>
+      </div>
+    }
+    <div class="form-grid">
+      <mat-form-field appearance="outline" subscriptSizing="dynamic" class="field"
+        ><mat-label>{{ 'Start time' | t }}</mat-label
+        ><input
+          matInput
+          name="startTime"
+          type="time"
+          [(ngModel)]="form.startTime"
+          (ngModelChange)="acceptOverlap = false; store.clearScheduleConflicts()"
+          required
+      /></mat-form-field>
+      <mat-form-field appearance="outline" subscriptSizing="dynamic" class="field full"
+        ><mat-label>{{ 'Activity' | t }}</mat-label
+        ><input
+          matInput
+          name="activity"
+          [(ngModel)]="form.activity"
+          required
+          maxlength="80"
+          [disabled]="!!editingId()"
+          [placeholder]="'e.g. Morning run' | t"
+      /></mat-form-field>
+      <mat-form-field appearance="outline" subscriptSizing="dynamic" class="field"
+        ><mat-label>{{ 'Date' | t }}</mat-label
+        ><input
+          matInput
+          name="date"
+          type="date"
+          [(ngModel)]="form.date"
+          (ngModelChange)="acceptOverlap = false; store.clearScheduleConflicts()"
+          required
+      /></mat-form-field>
+      <mat-form-field appearance="outline" subscriptSizing="dynamic" class="field"
+        ><mat-label>{{ 'Duration (minutes)' | t }}</mat-label
+        ><input
+          matInput
+          name="duration"
+          type="number"
+          [(ngModel)]="form.durationMinutes"
+          (ngModelChange)="acceptOverlap = false; store.clearScheduleConflicts()"
+          min="1"
+          max="1440"
+          required
+          [disabled]="!!editingId()"
+      /></mat-form-field>
+      <mat-form-field appearance="outline" subscriptSizing="dynamic" class="field"
+        ><mat-label>{{ 'Intensity' | t }}</mat-label
+        ><mat-select name="intensity" [(ngModel)]="form.intensity" [disabled]="!!editingId()">
+          <mat-option value="Low">{{ 'Low' | t }}</mat-option>
+          <mat-option value="Medium">{{ 'Medium' | t }}</mat-option>
+          <mat-option value="High">{{ 'High' | t }}</mat-option>
+        </mat-select></mat-form-field
+      >
+      <mat-form-field appearance="outline" subscriptSizing="dynamic" class="field"
+        ><mat-label>{{ 'Type' | t }}</mat-label
+        ><mat-select name="kind" [(ngModel)]="form.kind" [disabled]="!!editingId()">
+          <mat-option value="Workout">{{ 'Workout' | t }}</mat-option>
+          <mat-option value="Active rest">{{ 'Active rest' | t }}</mat-option>
+        </mat-select></mat-form-field
+      >
+    </div>
+    <div class="form-actions">
+      <button mat-button type="button" class="btn secondary" (click)="editor.close()">
+        {{ 'Cancel' | t }}</button
+      ><button mat-flat-button class="btn primary" [disabled]="planForm.invalid || store.busy()">
+        {{ 'Save activity' | t }}
+      </button>
+    </div>
+  </form>
+</pp-form-dialog>
+
+<section class="panel mt">
+  <h2>{{ 'Plan period' | t }}</h2>
+  <p>
+    {{ 'Activities must fall within this period. Extend it before planning another week.' | t }}
+  </p>
+  <form #periodForm="ngForm" (ngSubmit)="periodForm.valid && store.setPeriod(periodFrom, periodTo)">
+    <div class="form-grid">
+      <mat-form-field appearance="outline" subscriptSizing="dynamic" class="field"
+        ><mat-label>{{ 'From' | t }}</mat-label
+        ><input
+          matInput
+          name="periodFrom"
+          type="date"
+          required
+          [(ngModel)]="periodFrom" /></mat-form-field
+      ><mat-form-field appearance="outline" subscriptSizing="dynamic" class="field"
+        ><mat-label>{{ 'To' | t }}</mat-label
+        ><input matInput name="periodTo" type="date" required [(ngModel)]="periodTo"
+      /></mat-form-field>
+    </div>
+    <button mat-button class="btn secondary mt" [disabled]="periodForm.invalid || store.busy()">
+      {{ 'Save plan period' | t }}
+    </button>
+  </form>
+</section>
