@@ -1,0 +1,18 @@
+<article
+  class="metric-card"
+  [class.lavender]="tone() === 'lavender'"
+  [class.mint]="tone() === 'mint'"
+>
+  <div class="metric-label">
+    <span>{{ label() | t }}</span
+    ><pp-icon [name]="icon()" />
+  </div>
+  <div class="metric-value">
+    @if (value() === '—') {
+      <span style="font-size: 1rem">{{ 'No data' | t }}</span>
+    } @else {
+      {{ value() | t }}<small>{{ unit() | t }}</small>
+    }
+  </div>
+  <p>{{ detail() | t }}</p>
+</article>

@@ -1,0 +1,42 @@
+<main class="legal-page">
+  <article class="panel">
+    <h1>{{ 'legal.terms.title' | t }}</h1>
+    <section>
+      <h2>{{ 'legal.terms.scope.title' | t }}</h2>
+      <p>{{ 'legal.terms.scope.body' | t }}</p>
+    </section>
+    <section>
+      <h2>{{ 'legal.terms.health.title' | t }}</h2>
+      <p>{{ 'legal.terms.health.body' | t }}</p>
+    </section>
+    <section>
+      <h2>{{ 'legal.terms.ethics.title' | t }}</h2>
+      <p>{{ 'legal.terms.ethics.body' | t }}</p>
+    </section>
+    <section>
+      <h2>{{ 'legal.references' | t }}</h2>
+      <ul>
+        <li>
+          <a href="https://www.computer.org/education/code-of-ethics">{{ 'legal.acm' | t }}</a>
+        </li>
+        <li>
+          <a
+            href="https://www.cip.org.pe/publicaciones/reglamentosCNCD2018/codigo_de_etica_del_cip.pdf"
+            >{{ 'legal.cip' | t }}</a
+          >
+        </li>
+      </ul>
+    </section>
+    @if (navigation.ready()) {
+      <a mat-button [routerLink]="navigation.error() ? '/sign-in' : navigation.destination()">{{
+        (navigation.error() || navigation.destination() === '/sign-in'
+          ? 'legal.backSignIn'
+          : 'legal.backHome'
+        ) | t
+      }}</a>
+    }
+    @if (navigation.error()) {
+      <p role="status">{{ 'legal.sessionError' | t }}</p>
+    }
+  </article>
+</main>

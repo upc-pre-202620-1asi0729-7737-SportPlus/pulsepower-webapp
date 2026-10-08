@@ -1,0 +1,38 @@
+@if (hasData()) {
+  <div
+    class="bar-chart"
+    [class.dense]="points().length > 14"
+    [attr.tabindex]="points().length > 14 ? 0 : null"
+    role="img"
+    [attr.aria-label]="description() | t"
+  >
+    <div class="bar-grid">
+      @for (point of points(); track $index) {
+        <div class="bar-column">
+          <span class="bar-value">{{ (point.value === null ? 'No data' : point.value) | t }}</span>
+          <div class="bar-space">
+            <div
+              class="bar"
+              [class.missing]="point.value === null"
+              [style.height.%]="height(point.value)"
+              [style.background]="color()"
+              [attr.title]="
+                (point.label | t) + ': ' + (point.value === null ? ('No data' | t) : point.value)
+              "
+            ></div>
+          </div>
+          <span class="bar-label">{{ point.label | t }}</span>
+        </div>
+      }
+    </div>
+  </div>
+  @if (hasMissing()) {
+    <p class="chart-caption">{{ 'chart.missingLegend' | t }}</p>
+  }
+} @else {
+  <div class="chart-empty" role="status">
+    <strong>{{ 'chart.emptyTitle' | t }}</strong>
+    <p>{{ 'chart.emptyDescription' | t }}</p>
+  </div>
+}
+<p class="chart-caption">{{ description() | t }}</p>

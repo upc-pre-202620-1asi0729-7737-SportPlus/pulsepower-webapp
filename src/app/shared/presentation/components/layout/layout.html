@@ -1,0 +1,167 @@
+<a class="skip-link" href="#main-content">{{ 'Skip to content' | t }}</a>
+@if (menuOpen()) {
+  <button
+    class="menu-backdrop"
+    [attr.aria-label]="'Close navigation' | t"
+    (click)="menuOpen.set(false)"
+  ></button>
+}
+<aside
+  class="sidebar"
+  [class.open]="menuOpen()"
+  id="main-navigation"
+  [attr.aria-label]="'Main navigation' | t"
+>
+  <a class="brand" routerLink="/home" [attr.aria-label]="'PulsePower home' | t">
+    <span class="brand-mark" aria-hidden="true"
+      ><img src="assets/pulsepower-logo.png" alt="" width="112" height="84"
+    /></span>
+    <span class="brand-name">Pulse<span>Power</span></span>
+  </a>
+  <nav>
+    @for (item of nav(); track item.path) {
+      <a
+        class="nav-link"
+        [routerLink]="item.path"
+        routerLinkActive="active"
+        ariaCurrentWhenActive="page"
+      >
+        <pp-icon [name]="item.icon" /><span>{{ item.label | t }}</span>
+        @if (item.children) {
+          <span class="nav-chevron">⌄</span>
+        }
+      </a>
+      @if (item.children) {
+        <div class="nav-children">
+          @for (child of item.children; track child.path) {
+            <a
+              [routerLink]="child.path"
+              routerLinkActive="selected"
+              [routerLinkActiveOptions]="{ exact: true }"
+              ariaCurrentWhenActive="page"
+              ><span>●</span>{{ child.label | t }}</a
+            >
+          }
+        </div>
+      }
+    }
+  </nav>
+  <div class="sidebar-profile">
+    <span class="avatar">{{ shell.initials() | t }}</span>
+    <div>
+      <strong>{{ shell.name() | t }}</strong
+      ><small>{{ (workspace.mode === 'demo' ? 'Demo data' : 'Local workspace') | t }}</small>
+    </div>
+    <a
+      class="icon-button settings-link"
+      routerLink="/settings"
+      [attr.aria-label]="'Settings' | t"
+      [title]="'Settings' | t"
+      ><pp-icon name="settings"
+    /></a>
+  </div>
+</aside>
+<div class="workspace">
+  <mat-toolbar class="topbar">
+    <button
+      class="icon-button mobile-menu"
+      [attr.aria-label]="'Open navigation' | t"
+      aria-controls="main-navigation"
+      [attr.aria-expanded]="menuOpen()"
+      (click)="menuOpen.set(!menuOpen())"
+    >
+      <pp-icon name="menu" />
+    </button>
+    <div class="topbar-title">
+      <strong>{{ title() | t }}</strong>
+      <p>{{ date() | t }}</p>
+    </div>
+    <div class="topbar-actions">
+      <div class="language-switch" role="group" [attr.aria-label]="'Language' | t">
+        <button
+          type="button"
+          lang="en"
+          aria-label="English"
+          [class.active]="i18n.locale() === 'en'"
+          [attr.aria-pressed]="i18n.locale() === 'en'"
+          (click)="i18n.setLocale('en')"
+        >
+          @if (i18n.locale() === 'en') {
+            <pp-icon name="check" />
+          }
+          EN
+        </button>
+        <button
+          type="button"
+          lang="es"
+          aria-label="Español"
+          [class.active]="i18n.locale() === 'es'"
+          [attr.aria-pressed]="i18n.locale() === 'es'"
+          (click)="i18n.setLocale('es')"
+        >
+          @if (i18n.locale() === 'es') {
+            <pp-icon name="check" />
+          }
+          ES
+        </button>
+      </div>
+      <a
+        class="icon-button notification-link"
+        routerLink="/recovery"
+        fragment="alerts"
+        [attr.aria-label]="'View guidance alerts' | t"
+        ><span aria-hidden="true">🔔</span></a
+      ><button
+        type="button"
+        class="avatar"
+        [attr.aria-label]="'Your profile' | t"
+        [matMenuTriggerFor]="profileMenu"
+      >
+        {{ shell.initials() | t }}
+      </button>
+    </div>
+  </mat-toolbar>
+  <mat-menu #profileMenu="matMenu">
+    <button mat-menu-item routerLink="/settings">
+      <pp-icon name="settings" style="width: 16px; height: 16px; margin-right: 10px" /><span>{{
+        'Settings' | t
+      }}</span>
+    </button>
+    <button mat-menu-item (click)="signOut()">
+      <pp-icon name="logout" style="width: 16px; height: 16px; margin-right: 10px" /><span>{{
+        'Sign out' | t
+      }}</span>
+    </button>
+  </mat-menu>
+  <div class="workspace-mode">
+    <span>{{
+      (workspace.mode === 'demo'
+        ? 'Example records — not real measurements'
+        : 'Your personal records'
+      ) | t
+    }}</span>
+    <select
+      [attr.aria-label]="'Workspace' | t"
+      [value]="workspace.mode"
+      (change)="workspace.setMode($any($event.target).value)"
+    >
+      <option value="demo">{{ 'Demo data' | t }}</option>
+      <option value="personal">{{ 'My records' | t }}</option>
+    </select>
+  </div>
+  <main id="main-content" tabindex="-1">
+    @if (notifications.delivered().length) {
+      <details class="panel mb">
+        <summary>{{ 'Local notifications' | t }} ({{ notifications.delivered().length }})</summary>
+        <p>{{ 'Reminders run while this app is open. No push service is connected.' | t }}</p>
+        @for (notice of notifications.delivered(); track notice.id) {
+          <p>{{ notice.title | t }} · {{ notice.deliveredAt?.slice(0, 10) }}</p>
+        }
+      </details>
+    }
+    @if (notifications.error(); as error) {
+      <p role="alert">{{ error | t }}</p>
+    }
+    <router-outlet />
+  </main>
+</div>
