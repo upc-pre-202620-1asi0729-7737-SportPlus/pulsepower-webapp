@@ -1,0 +1,48 @@
+<form #checkIn="ngForm" (ngSubmit)="submitted.emit(form)">
+  @if (!compact()) {
+    <mat-form-field appearance="outline" subscriptSizing="dynamic" class="field"
+    ><mat-label>{{ 'Date' | t }}</mat-label
+    ><input matInput name="date" type="date" [(ngModel)]="form.date" required
+    /></mat-form-field>
+  }
+  <fieldset class="mood-field">
+    <legend>{{ 'OVERALL STATE' | t }}</legend>
+    <div class="moods">
+      @for (mood of moods; track mood.value) {
+        <button
+          type="button"
+          [class.selected]="form.mood === mood.value"
+          [attr.aria-pressed]="form.mood === mood.value"
+          [attr.aria-label]="mood.label | t"
+          (click)="form.mood = mood.value"
+        >
+          {{ mood.face | t }}
+        </button>
+      }
+    </div>
+  </fieldset>
+  <label class="field stress-label"
+  >{{ 'Perceived stress' | t }} <span>{{ form.stress | t }} / 10</span
+  ><input name="stress" type="range" [(ngModel)]="form.stress" min="1" max="10" step="1" required
+  /></label>
+  <mat-checkbox name="discomfort" [(ngModel)]="form.discomfort">
+    {{ 'Report pain or discomfort today' | t }}</mat-checkbox
+  >
+  <mat-form-field appearance="outline" subscriptSizing="dynamic" class="field"
+  ><mat-label>{{ 'Daily notes' | t }}</mat-label
+  ><textarea
+    matInput
+    name="notes"
+    [(ngModel)]="form.notes"
+    maxlength="2000"
+    [placeholder]="'Daily notes (optional)…' | t"
+  ></textarea>
+  </mat-form-field>
+  <button
+    mat-flat-button
+    class="btn primary save-check-in"
+    [disabled]="checkIn.invalid || form.mood === 0 || busy()"
+  >
+    {{ 'Save check-in' | t }}
+  </button>
+</form>
