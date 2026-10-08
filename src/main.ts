@@ -1,7 +1,10 @@
-import { platformBrowser } from '@angular/platform-browser';
-import { AppModule } from './app/app-module';
+import { enableProdMode } from '@angular/core';
+import { environment } from './environments/environment';
+import { bootstrapApplication } from '@angular/platform-browser';
+import { App } from './app/app';
+import { appConfig } from './app/app.config';
+if (environment.production) {
+  enableProdMode();
+}
 
-platformBrowser().bootstrapModule(AppModule, {
-  
-})
-  .catch(err => console.error(err));
+bootstrapApplication(App, appConfig).catch((error) => console.error(error));

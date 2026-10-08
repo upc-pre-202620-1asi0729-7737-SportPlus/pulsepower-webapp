@@ -1,0 +1,59 @@
+@use '@angular/material' as mat;
+
+html {
+  @include mat.theme(
+    (
+      color: (
+        primary: mat.$azure-palette,
+        tertiary: mat.$blue-palette,
+      ),
+      typography: Rubik,
+      density: 0,
+    )
+  );
+}
+
+html {
+  color-scheme: light;
+  --mat-sys-primary: #137c70;
+  --mat-sys-on-primary: #ffffff;
+  --mat-sys-primary-container: #2dd4bf;
+  --mat-sys-on-primary-container: #101b35;
+  --mat-sys-secondary-container: #e5faf4;
+  --mat-sys-on-secondary-container: #101b35;
+  --mat-sys-tertiary-container: #ede9fe;
+  --mat-sys-surface: #ffffff;
+  --mat-sys-on-surface: #101b35;
+  --mat-sys-surface-container: #f8fafc;
+  --mat-sys-on-surface-variant: #64748b;
+  --mat-sys-outline: #64748b;
+  --mat-sys-outline-variant: #e5eaf1;
+  --mat-sys-body-large-font: Rubik;
+  --mat-sys-body-medium-font: Rubik;
+  --mat-sys-body-small-font: Rubik;
+  --mat-sys-label-large-font: Rubik;
+  --mat-sys-label-medium-font: Rubik;
+  --mat-sys-label-small-font: Rubik;
+  --mat-sys-title-large-font: Rubik;
+  --mat-sys-title-medium-font: Rubik;
+  --mat-sys-title-small-font: Rubik;
+  --mat-sys-headline-small-font: Rubik;
+}
+
+html {
+  --mat-button-filled-container-color: var(--turquoise);
+  --mat-button-filled-label-text-color: var(--navy);
+  --mat-button-filled-container-shape: 10px;
+  --mat-button-text-container-shape: 10px;
+  --mat-form-field-outlined-container-shape: 10px;
+}
+.auth-field {
+  --mat-form-field-outlined-container-shape: 16px;
+}
+.dark-panel {
+  --mat-sys-on-surface: #ffffff;
+  --mat-sys-on-surface-variant: #b8c3d4;
+  --mat-sys-primary: #2dd4bf;
+  --mat-sys-on-primary: #101b35;
+  --mat-sys-outline: #8090a6;
+}
