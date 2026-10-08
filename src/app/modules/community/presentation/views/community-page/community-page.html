@@ -1,0 +1,185 @@
+<pp-page-heading
+  [title]="'Community' | t"
+  [description]="'Celebrate consistency and the progress that matters to you.' | t"
+  [eyebrow]="'BETTER, TOGETHER' | t"
+  ><button mat-flat-button class="btn primary" (click)="editor.open()">
+    <pp-icon name="plus" /> {{ 'Save progress' | t }}
+  </button></pp-page-heading
+>
+<pp-feedback [error]="store.error()" [message]="store.message()" />
+<div class="grid-3">
+  <pp-metric-card
+    [label]="'CURRENT RECORDING STREAK' | t"
+    [value]="store.streak().days"
+    unit="days"
+    [detail]="'Consecutive days with at least one record' | t"
+    icon="pulse"
+  /><pp-metric-card
+    [label]="'PRIVATE PROGRESS NOTES' | t"
+    [value]="store.progress().length"
+    [detail]="'Saved on this device' | t"
+    icon="reports"
+  /><pp-metric-card
+    [label]="'EARNED ACHIEVEMENTS' | t"
+    [value]="store.achievements().length"
+    [detail]="
+      (store.demo
+        ? 'Illustrative achievement. Award rules are pending confirmation.'
+        : 'Achievement service not yet connected'
+      ) | t
+    "
+    icon="spark"
+  />
+</div>
+<div class="grid-2 mt">
+  <section class="panel">
+    <div class="panel-heading">
+      <h2>{{ 'Your progress' | t }}</h2>
+      <pp-icon name="community" />
+    </div>
+    @for (progress of store.progress(); track progress.id) {
+      <article class="progress-note">
+        <div class="panel-heading">
+          <h3>{{ progress.title | t }}</h3>
+          <span class="badge purple">{{ 'Private' | t }}</span>
+        </div>
+        <p>{{ progress.content | t }}</p>
+        @if (store.demo) {
+          <button mat-button class="btn secondary small mt" (click)="store.shareDemo(progress.id)">
+            {{ 'Simulate sharing with selected audience' | t }}
+          </button>
+        }
+        <div class="record-row">
+          <small class="record-main">{{ progress.createdAt | localDate: 'mediumDate' | t }}</small
+          ><button mat-button class="btn text small" (click)="confirmRemove(progress.id, removal)">
+            {{ 'Remove' | t }}
+          </button>
+        </div>
+      </article>
+    } @empty {
+      <pp-empty-state
+        icon="community"
+        [title]="'Every step forward matters' | t"
+        [description]="
+          'Save a private note about your progress. You can review it here whenever you need a little perspective.'
+            | t
+        "
+      />
+    }
+  </section>
+  <section class="panel">
+    <div class="panel-heading">
+      <h2>{{ 'Trusted contacts & groups' | t }}</h2>
+      <pp-icon name="community" />
+    </div>
+    @if (store.demo) {
+      <p class="notice">
+        {{
+          'Sharing simulation for this visit only. No one else receives or accesses your notes.' | t
+        }}
+      </p>
+      <mat-form-field appearance="outline" subscriptSizing="dynamic" class="field mt"
+        ><mat-label>{{ 'Preview audience' | t }}</mat-label
+        ><mat-select [ngModel]="store.audience()" (ngModelChange)="store.audience.set($event)">
+          <mat-option value="group">{{ 'Demo training group' | t }}</mat-option>
+          <mat-option value="contact">{{ 'Demo trusted contact' | t }}</mat-option>
+        </mat-select></mat-form-field
+      >
+      <h3 class="mt">{{ 'Recipient preview' | t }}</h3>
+      @for (progress of store.recipientPreview(); track progress.id) {
+        <article class="progress-note">
+          <strong>{{ progress.title }}</strong>
+          <p>{{ progress.content }}</p>
+          <button mat-button class="btn text" (click)="store.revokeDemo(progress.id)">
+            {{ 'Revoke simulated access' | t }}
+          </button>
+        </article>
+      } @empty {
+        <p>{{ 'No progress shared with this audience.' | t }}</p>
+      }
+    } @else {
+      <pp-empty-state
+        icon="community"
+        [title]="'Progress is personal' | t"
+        [description]="
+          'Sharing with a group or trusted contact will be available when the community service is connected.'
+            | t
+        "
+      />
+    }
+    <div class="notice">
+      {{
+        'Your local notes remain private on this browser. Saving a note does not publish or send it to anyone.'
+          | t
+      }}
+    </div>
+  </section>
+</div>
+<section class="panel mt">
+  <div class="panel-heading">
+    <h2>{{ 'Achievements & challenges' | t }}</h2>
+    <pp-icon name="spark" />
+  </div>
+  @for (achievement of store.achievements(); track achievement.id) {
+    <div class="record-row">
+      <strong>{{ achievement.name | t }}</strong>
+      <p>{{ achievement.description | t }}</p>
+    </div>
+  } @empty {
+    <pp-empty-state
+      icon="spark"
+      [title]="'Keep showing up for yourself' | t"
+      [description]="
+        'Your achievement catalog and group challenges will appear when the community service is available.'
+          | t
+      "
+    />
+  }
+</section>
+<pp-form-dialog #editor [title]="'Save your progress' | t"
+  ><pp-feedback [error]="store.error()" />
+  <form #progressForm="ngForm" (ngSubmit)="save(editor)">
+    <div class="form-grid">
+      <mat-form-field appearance="outline" subscriptSizing="dynamic" class="field full"
+        ><mat-label>{{ 'Title' | t }}</mat-label
+        ><input
+          matInput
+          name="title"
+          [(ngModel)]="title"
+          maxlength="100"
+          required
+          [placeholder]="'What would you like to remember?' | t" /></mat-form-field
+      ><mat-form-field appearance="outline" subscriptSizing="dynamic" class="field full"
+        ><mat-label>{{ 'Your progress' | t }}</mat-label
+        ><textarea
+          matInput
+          name="content"
+          [(ngModel)]="content"
+          maxlength="2000"
+          required
+          [placeholder]="'Reflect on your training, rest or wellbeing…' | t"
+        ></textarea>
+      </mat-form-field>
+    </div>
+    <div class="form-actions">
+      <button mat-button type="button" class="btn secondary" (click)="editor.close()">
+        {{ 'Cancel' | t }}</button
+      ><button
+        mat-flat-button
+        class="btn primary"
+        [disabled]="progressForm.invalid || store.busy()"
+      >
+        {{ 'Save privately' | t }}
+      </button>
+    </div>
+  </form></pp-form-dialog
+>
+<pp-form-dialog #removal [title]="'Remove private progress?' | t"
+  ><p>{{ 'This removes the selected note from this device.' | t }}</p>
+  <div class="form-actions">
+    <button mat-button class="btn secondary" (click)="removal.close()">{{ 'Keep note' | t }}</button
+    ><button mat-button class="btn danger" [disabled]="store.busy()" (click)="remove(removal)">
+      {{ 'Remove note' | t }}
+    </button>
+  </div></pp-form-dialog
+>
