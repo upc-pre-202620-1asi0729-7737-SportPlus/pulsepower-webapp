@@ -1,0 +1,74 @@
+:host {
+  display: block;
+}
+.mood-field {
+  border: 0;
+  padding: 0;
+  margin: 24px 0 20px;
+}
+.mood-field legend {
+  font-size: 10px;
+  font-weight: 600;
+  color: var(--muted);
+  margin-bottom: 12px;
+}
+.moods {
+  display: flex;
+  gap: 8px;
+}
+.moods button {
+  flex: 1;
+  height: 45px;
+  border: 1px solid #dce3eb;
+  border-radius: 12px;
+  background: transparent;
+  font-size: 22px;
+}
+.moods button.selected {
+  border-color: var(--turquoise);
+  background: #2dd4bf20;
+  box-shadow: 0 0 0 1px var(--turquoise);
+}
+.check-row {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  margin: 16px 0;
+  font-size: 12px;
+  color: var(--muted);
+}
+.check-row input {
+  accent-color: var(--turquoise);
+  width: 18px;
+  height: 18px;
+}
+.stress-label {
+  position: relative;
+}
+.stress-label span {
+  position: absolute;
+  right: 0;
+  font-weight: 400;
+}
+.stress-label input {
+  min-height: 24px;
+  padding: 0;
+  accent-color: var(--turquoise);
+}
+.save-check-in {
+  width: 100%;
+  margin-top: 20px;
+}
+:host-context(.dark-panel) .field textarea {
+  background: #ffffff0b;
+  color: white;
+  border-color: #ffffff12;
+}
+:host-context(.dark-panel) .moods button {
+  border-color: #ffffff20;
+}
+:host-context(.dark-panel) .field,
+:host-context(.dark-panel) .mood-field legend,
+:host-context(.dark-panel) .check-row {
+  color: #a4adbd;
+}
