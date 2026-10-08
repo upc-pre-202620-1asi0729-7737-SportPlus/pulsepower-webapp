@@ -1,0 +1,134 @@
+<pp-auth-layout>
+  @if (!identity.draft()) {
+    <ol class="steps" [attr.aria-label]="'auth.registrationSteps' | t">
+      <li class="active" aria-current="step"><b>1</b>{{ 'auth.credentials' | t }}</li>
+      <li><b>2</b>{{ 'auth.yourFocus' | t }}</li>
+    </ol>
+    <h1>{{ 'auth.createYourAccount' | t }}</h1>
+    <p class="auth-description">{{ 'auth.stepOne' | t }}</p>
+    <form #registration="ngForm" (ngSubmit)="registration.valid && continue()">
+      <mat-form-field appearance="outline" subscriptSizing="dynamic" class="auth-field"
+        ><mat-label>{{ 'Full name' | t }}</mat-label
+        ><input
+          matInput
+          id="sign-up-name"
+          name="fullName"
+          autocomplete="name"
+          [(ngModel)]="fullName"
+          required
+          maxlength="100"
+          pattern=".*\S.*"
+      /></mat-form-field>
+      <mat-form-field appearance="outline" subscriptSizing="dynamic" class="auth-field"
+        ><mat-label>{{ 'Email address' | t }}</mat-label
+        ><input
+          matInput
+          id="sign-up-email"
+          name="email"
+          type="email"
+          autocomplete="email"
+          [(ngModel)]="email"
+          required
+          email
+      /></mat-form-field>
+      <mat-form-field appearance="outline" subscriptSizing="dynamic" class="auth-field"
+        ><mat-label>{{ 'Password' | t }}</mat-label>
+        <input
+          matInput
+          id="sign-up-password"
+          name="password"
+          [type]="showPassword() ? 'text' : 'password'"
+          autocomplete="new-password"
+          [(ngModel)]="password"
+          required
+          minlength="8"
+          aria-describedby="password-hint"
+        />
+        <button
+          matSuffix
+          type="button"
+          (click)="showPassword.set(!showPassword())"
+          [attr.aria-pressed]="showPassword()"
+          aria-controls="sign-up-password"
+        >
+          {{ (showPassword() ? 'auth.hide' : 'auth.show') | t }}
+        </button>
+        <small id="password-hint">{{ 'auth.passwordHint' | t }}</small>
+      </mat-form-field>
+      <mat-form-field appearance="outline" subscriptSizing="dynamic" class="auth-field"
+        ><mat-label>{{ 'auth.confirmPassword' | t }}</mat-label>
+        <input
+          matInput
+          id="sign-up-confirmation"
+          name="confirmation"
+          [type]="showConfirmation() ? 'text' : 'password'"
+          autocomplete="new-password"
+          [(ngModel)]="confirmation"
+          required
+          minlength="8"
+        />
+        <button
+          matSuffix
+          type="button"
+          (click)="showConfirmation.set(!showConfirmation())"
+          [attr.aria-pressed]="showConfirmation()"
+          aria-controls="sign-up-confirmation"
+        >
+          {{ (showConfirmation() ? 'auth.hide' : 'auth.show') | t }}
+        </button>
+      </mat-form-field>
+      @if (registration.submitted && registration.invalid) {
+        <p class="auth-error" role="alert">{{ 'auth.registrationInvalid' | t }}</p>
+      }
+      @if (identity.registrationMessage(); as message) {
+        <p class="auth-message" role="status">{{ message | t }}</p>
+      }
+      <button mat-flat-button class="auth-submit" type="submit" [disabled]="identity.registering()">
+        {{ 'auth.continue' | t }}
+      </button>
+    </form>
+  } @else {
+    <ol class="steps">
+      <li><b>1</b>{{ 'auth.credentials' | t }}</li>
+      <li class="active" aria-current="step"><b>2</b>{{ 'auth.yourFocus' | t }}</li>
+    </ol>
+    <h1>{{ 'auth.yourFocus' | t }}</h1>
+    <p class="auth-description">
+      {{ 'Your progress is saved on this browser. You can return later.' | t }}
+    </p>
+    <form #focusForm="ngForm" (ngSubmit)="focusForm.valid && finish()">
+      <mat-form-field appearance="outline" subscriptSizing="dynamic" class="auth-field"
+        ><mat-label>{{ 'Focus' | t }}</mat-label
+        ><mat-select
+          name="focus"
+          [ngModel]="identity.draft()!.focus"
+          (ngModelChange)="identity.saveFocus($event, identity.draft()!.goal)"
+        >
+          <mat-option value="Athlete">{{ 'Athlete' | t }}</mat-option>
+          <mat-option value="Wellness Seeker">{{ 'Wellness Seeker' | t }}</mat-option>
+        </mat-select></mat-form-field
+      >
+      <mat-form-field appearance="outline" subscriptSizing="dynamic" class="auth-field"
+        ><mat-label>{{ 'Goal' | t }}</mat-label
+        ><textarea
+          matInput
+          name="goal"
+          required
+          maxlength="200"
+          [ngModel]="identity.draft()!.goal"
+          (ngModelChange)="identity.saveFocus(identity.draft()!.focus, $event)"
+        ></textarea>
+      </mat-form-field>
+      @if (identity.registrationMessage(); as message) {
+        <p role="alert">{{ message | t }}</p>
+      }
+      <button mat-flat-button class="auth-submit" [disabled]="focusForm.invalid">
+        {{ 'Complete setup' | t }}
+      </button>
+    </form>
+  }
+  <p class="auth-footer">
+    {{ 'auth.alreadyAccount' | t }}
+    <a class="auth-link" routerLink="/sign-in">{{ 'Sign In' | t }}</a>
+  </p>
+</pp-auth-layout>

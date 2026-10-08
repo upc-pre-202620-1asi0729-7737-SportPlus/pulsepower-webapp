@@ -1,0 +1,297 @@
+<pp-page-heading
+  [title]="'Settings' | t"
+  [description]="'Your profile, goals and preferences.' | t"
+  [eyebrow]="'MAKE PULSEPOWER YOURS' | t"
+/>
+<pp-feedback [error]="store.error()" [message]="store.message()" />
+<nav class="tabs" [attr.aria-label]="'Settings sections' | t">
+  <button [class.active]="tab() === 'profile'" (click)="tab.set('profile')">
+    {{ 'Profile' | t }}</button
+  ><button [class.active]="tab() === 'notifications'" (click)="tab.set('notifications')">
+    {{ 'Notifications' | t }}</button
+  ><button [class.active]="tab() === 'device'" (click)="tab.set('device')">
+    {{ 'Device' | t }}
+  </button>
+</nav>
+@if (tab() === 'profile') {
+  <div class="grid-2">
+    <section class="panel">
+      <div class="panel-heading">
+        <h2>{{ 'Personal data' | t }}</h2>
+        <pp-icon name="settings" />
+      </div>
+      <form #profileForm="ngForm" (ngSubmit)="store.save(form)">
+        <div class="form-grid">
+          <mat-form-field appearance="outline" subscriptSizing="dynamic" class="field full"
+            ><mat-label>{{ 'Full name' | t }}</mat-label
+            ><input
+              matInput
+              name="displayName"
+              [(ngModel)]="form.displayName"
+              required
+              maxlength="100"
+              autocomplete="name"
+              [placeholder]="'Your name' | t"
+          /></mat-form-field>
+          <mat-form-field appearance="outline" subscriptSizing="dynamic" class="field full"
+            ><mat-label>{{ 'Your focus' | t }}</mat-label
+            ><mat-select name="focus" [(ngModel)]="form.focus">
+              <mat-option value="Athlete">{{ 'Athlete' | t }}</mat-option>
+              <mat-option value="Wellness Seeker">{{ 'Wellness Seeker' | t }}</mat-option>
+            </mat-select></mat-form-field
+          >
+          <mat-form-field appearance="outline" subscriptSizing="dynamic" class="field"
+            ><mat-label>{{ 'Age (years)' | t }}</mat-label
+            ><input matInput name="age" type="number" [(ngModel)]="form.age" min="1" max="130"
+          /></mat-form-field>
+          <mat-form-field appearance="outline" subscriptSizing="dynamic" class="field"
+            ><mat-label>{{ 'Weight (kg)' | t }}</mat-label
+            ><input
+              matInput
+              name="weight"
+              type="number"
+              [(ngModel)]="form.weightKg"
+              min="1"
+              max="500"
+              step="0.1"
+          /></mat-form-field>
+          <mat-form-field appearance="outline" subscriptSizing="dynamic" class="field"
+            ><mat-label>{{ 'Height (cm)' | t }}</mat-label
+            ><input
+              matInput
+              name="height"
+              type="number"
+              [(ngModel)]="form.heightCm"
+              min="1"
+              max="300"
+          /></mat-form-field>
+          <mat-form-field appearance="outline" subscriptSizing="dynamic" class="field"
+            ><mat-label>{{ 'Main sport' | t }}</mat-label
+            ><input
+              matInput
+              name="sport"
+              [(ngModel)]="form.mainSport"
+              maxlength="80"
+              [placeholder]="'Optional' | t"
+          /></mat-form-field>
+          <mat-form-field appearance="outline" subscriptSizing="dynamic" class="field full"
+            ><mat-label>{{ 'Training routine' | t }}</mat-label
+            ><textarea
+              matInput
+              name="trainingRoutine"
+              maxlength="2000"
+              [(ngModel)]="form.trainingRoutine"
+            ></textarea>
+          </mat-form-field>
+          <mat-form-field appearance="outline" subscriptSizing="dynamic" class="field full"
+            ><mat-label>{{ 'Physical history' | t }}</mat-label
+            ><textarea
+              matInput
+              name="physicalHistory"
+              maxlength="2000"
+              [(ngModel)]="form.physicalHistory"
+            ></textarea>
+          </mat-form-field>
+        </div>
+        <button
+          mat-flat-button
+          class="btn primary mt"
+          [disabled]="profileForm.invalid || store.busy()"
+        >
+          {{ 'Save changes' | t }}
+        </button>
+      </form>
+    </section>
+    <section class="panel">
+      <div class="panel-heading">
+        <h2>{{ 'Your personal goals' | t }}</h2>
+        <pp-icon name="wellness" />
+      </div>
+      @for (goal of store.profile()?.goals ?? []; track goal.id) {
+        <div class="record-row">
+          <button
+            class="habit-toggle"
+            [class.done]="goal.completed"
+            [attr.aria-label]="'Toggle goal: ' + goal.description | t"
+            [attr.aria-pressed]="goal.completed"
+            (click)="store.toggleGoal(goal.id)"
+          >
+            <pp-icon name="check" /></button
+          ><span [class.goal-done]="goal.completed">{{ goal.description | t }}</span>
+        </div>
+      } @empty {
+        <pp-empty-state
+          icon="wellness"
+          [title]="'What would you like to work toward?' | t"
+          [description]="'Set a goal for your training, rest or wellbeing.' | t"
+        />
+      }
+      <form class="goal-form" (ngSubmit)="addGoal()">
+        <mat-form-field appearance="outline" subscriptSizing="dynamic" class="field"
+          ><mat-label>{{ 'New goal' | t }}</mat-label
+          ><input
+            matInput
+            name="goal"
+            [(ngModel)]="goal"
+            maxlength="200"
+            [placeholder]="'Describe your goal' | t"
+            [disabled]="!store.profile()" /></mat-form-field
+        ><button
+          mat-button
+          class="btn secondary mt"
+          [disabled]="!goal.trim() || !store.profile() || store.busy()"
+        >
+          <pp-icon name="plus" /> {{ 'Add goal' | t }}
+        </button>
+      </form>
+    </section>
+  </div>
+  <div class="grid-2 mt">
+    <section class="panel">
+      <h2>{{ 'Subscription' | t }}</h2>
+      <p class="mt">{{ 'Review your plan and subscription availability.' | t }}</p>
+      <a mat-button class="btn secondary mt" routerLink="/subscription"
+        >{{ 'View subscription' | t }} <pp-icon name="arrow"
+      /></a>
+    </section>
+    <section class="panel">
+      <h2>{{ 'Your local workspace' | t }}</h2>
+      <p class="mt">
+        {{
+          'Records are stored on this browser. This version does not synchronize your data to an online account.'
+            | t
+        }}
+      </p>
+      <a mat-button class="btn text mt" routerLink="/sign-in"
+        >{{ 'Account access' | t }} <pp-icon name="arrow"
+      /></a>
+    </section>
+  </div>
+}
+@if (tab() === 'notifications') {
+  <section class="panel">
+    <h2>{{ 'Notification preferences' | t }}</h2>
+    <pp-feedback [error]="notifications.error()" [message]="notifications.message()" />
+    <form
+      #preferencesForm="ngForm"
+      (ngSubmit)="preferencesForm.valid && notifications.save(notificationForm)"
+    >
+      <div class="form-grid mt">
+        <mat-checkbox name="trainingEnabled" [(ngModel)]="notificationForm.trainingEnabled"
+          ><span> {{ 'Training notifications' | t }}</span></mat-checkbox
+        >
+        <mat-form-field appearance="outline" subscriptSizing="dynamic" class="field"
+          ><mat-label>{{ 'Allowed from' | t }}</mat-label
+          ><input
+            matInput
+            name="allowedFrom"
+            type="time"
+            [(ngModel)]="notificationForm.allowedFrom"
+            required
+        /></mat-form-field>
+        <mat-form-field appearance="outline" subscriptSizing="dynamic" class="field"
+          ><mat-label>{{ 'Allowed until' | t }}</mat-label
+          ><input
+            matInput
+            name="allowedTo"
+            type="time"
+            [(ngModel)]="notificationForm.allowedTo"
+            required
+        /></mat-form-field>
+        <mat-checkbox
+          name="disconnectEnabled"
+          [(ngModel)]="notificationForm.digitalDisconnectEnabled"
+          ><span> {{ 'Digital disconnection reminder' | t }}</span></mat-checkbox
+        >
+        <mat-form-field appearance="outline" subscriptSizing="dynamic" class="field"
+          ><mat-label>{{ 'Disconnection time' | t }}</mat-label
+          ><input
+            matInput
+            name="disconnectTime"
+            type="time"
+            [(ngModel)]="notificationForm.digitalDisconnectTime"
+            required
+        /></mat-form-field>
+      </div>
+      <button
+        mat-flat-button
+        class="btn primary mt"
+        [disabled]="preferencesForm.invalid || notifications.busy()"
+      >
+        {{ 'Save preferences' | t }}
+      </button>
+    </form>
+    <p class="notice mt">
+      {{ 'Preference saved on this device. Notification delivery is not connected yet.' | t }}
+    </p>
+    <div class="mt">
+      <h3>{{ 'Notification simulation' | t }}</h3>
+      <p>{{ 'Uses your saved preferences. No real notification is sent.' | t }}</p>
+      <mat-form-field appearance="outline" subscriptSizing="dynamic" class="field mt"
+        ><mat-label>{{ 'Test time' | t }}</mat-label
+        ><input matInput type="time" [(ngModel)]="simulationTime"
+      /></mat-form-field>
+      <button
+        mat-button
+        class="btn secondary mt"
+        [disabled]="!simulationTime"
+        (click)="notifications.simulate(simulationTime)"
+      >
+        {{ 'Simulate notification' | t }}
+      </button>
+      @if (notifications.simulation(); as result) {
+        <p class="notice mt" role="status">{{ result | t }}</p>
+      }
+    </div>
+    <a mat-button class="btn text mt" routerLink="/sleep">{{ 'Open sleep routine' | t }}</a>
+  </section>
+}
+@if (tab() === 'device') {
+  <section class="panel">
+    <pp-empty-state
+      icon="device"
+      [title]="'Connect your wearable' | t"
+      [description]="'Review device availability and physiological insights in Recovery.' | t"
+    /><a mat-flat-button class="btn primary" routerLink="/recovery"
+      >{{ 'Open wearable connection' | t }} <pp-icon name="arrow"
+    /></a>
+  </section>
+}
+
+<section class="panel mt">
+  <h2>{{ 'Delete local account' | t }}</h2>
+  <p>
+    {{
+      'Only the selected workspace is deleted. Its subscription and records are removed. Other accounts are kept. No online account exists.'
+        | t
+    }}
+  </p>
+  @if (deleting()) {
+    <mat-checkbox [ngModel]="deleteConfirmed()" (ngModelChange)="deleteConfirmed.set($event)">
+      {{ 'I confirm permanent deletion of this local workspace.' | t }}</mat-checkbox
+    >
+    <div class="form-actions">
+      <button
+        mat-button
+        class="btn secondary"
+        (click)="deleting.set(false); deleteConfirmed.set(false)"
+      >
+        {{ 'Cancel' | t }}</button
+      ><button
+        mat-button
+        class="btn danger"
+        [disabled]="!deleteConfirmed()"
+        (click)="deleteAccount()"
+      >
+        {{ 'Delete permanently' | t }}
+      </button>
+    </div>
+  } @else {
+    <button mat-button class="btn danger" (click)="deleting.set(true)">
+      {{ 'Delete local account' | t }}
+    </button>
+  }
+  @if (identity.signInError(); as error) {
+    <p role="alert">{{ error | t }}</p>
+  }
+</section>
