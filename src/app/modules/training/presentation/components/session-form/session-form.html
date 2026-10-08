@@ -1,0 +1,71 @@
+<form #sessionForm="ngForm" (ngSubmit)="submitted.emit(form)">
+  <div class="form-grid">
+    <mat-form-field appearance="outline" subscriptSizing="dynamic" class="field full"
+      ><mat-label>{{ 'Activity' | t }}</mat-label
+      ><input
+        matInput
+        name="activity"
+        [(ngModel)]="form.activity"
+        required
+        maxlength="80"
+        [placeholder]="'e.g. Strength training' | t"
+    /></mat-form-field>
+    <mat-form-field appearance="outline" subscriptSizing="dynamic" class="field"
+      ><mat-label>{{ 'Date' | t }}</mat-label
+      ><input matInput name="date" type="date" [(ngModel)]="form.date" required
+    /></mat-form-field>
+    <mat-form-field appearance="outline" subscriptSizing="dynamic" class="field"
+      ><mat-label>{{ 'Duration (minutes)' | t }}</mat-label
+      ><input
+        matInput
+        name="duration"
+        type="number"
+        [(ngModel)]="form.durationMinutes"
+        min="1"
+        max="1440"
+        required
+    /></mat-form-field>
+    <mat-form-field appearance="outline" subscriptSizing="dynamic" class="field full"
+      ><mat-label>{{ 'Perceived effort (1–10)' | t }}</mat-label
+      ><input
+        matInput
+        name="effort"
+        type="number"
+        [(ngModel)]="form.perceivedEffort"
+        min="1"
+        max="10"
+        required
+      /><small>{{ 'How demanding did this session feel?' | t }}</small></mat-form-field
+    >
+    <mat-form-field appearance="outline" subscriptSizing="dynamic" class="field full"
+      ><mat-label>{{ 'Planned activity (optional)' | t }}</mat-label
+      ><mat-select name="plannedActivity" [(ngModel)]="form.plannedActivityId">
+        <mat-option [value]="null">{{ 'Unplanned session' | t }}</mat-option>
+        @for (activity of activities(); track activity.id) {
+          @if (activity.status === 'Planned') {
+            <mat-option [value]="activity.id">
+              {{ activity.activity | t }} · {{ activity.date | t }}
+            </mat-option>
+          }
+        }
+      </mat-select></mat-form-field
+    >
+    <mat-form-field appearance="outline" subscriptSizing="dynamic" class="field full"
+      ><mat-label>{{ 'Notes' | t }}</mat-label
+      ><textarea
+        matInput
+        name="notes"
+        [(ngModel)]="form.notes"
+        maxlength="2000"
+        [placeholder]="'How did it go?' | t"
+      ></textarea>
+    </mat-form-field>
+  </div>
+  <div class="form-actions">
+    <button mat-button type="button" class="btn secondary" (click)="cancelled.emit()">
+      {{ 'Cancel' | t }}</button
+    ><button mat-flat-button class="btn primary" [disabled]="sessionForm.invalid || busy()">
+      {{ 'Save session' | t }}
+    </button>
+  </div>
+</form>

@@ -1,0 +1,29 @@
+<main class="legal-page">
+  <article class="panel">
+    <h1>{{ 'legal.privacy.title' | t }}</h1>
+    <section>
+      <h2>{{ 'legal.privacy.data.title' | t }}</h2>
+      <p>{{ 'legal.privacy.data.body' | t }}</p>
+    </section>
+    <section>
+      <h2>{{ 'legal.privacy.storage.title' | t }}</h2>
+      <p>{{ 'legal.privacy.storage.body' | t }}</p>
+    </section>
+    <section>
+      <h2>{{ 'legal.privacy.control.title' | t }}</h2>
+      <p>{{ 'legal.privacy.control.body' | t }}</p>
+    </section>
+
+    @if (navigation.ready()) {
+      <a mat-button [routerLink]="navigation.error() ? '/sign-in' : navigation.destination()">{{
+        (navigation.error() || navigation.destination() === '/sign-in'
+          ? 'legal.backSignIn'
+          : 'legal.backHome'
+        ) | t
+      }}</a>
+    }
+    @if (navigation.error()) {
+      <p role="status">{{ 'legal.sessionError' | t }}</p>
+    }
+  </article>
+</main>

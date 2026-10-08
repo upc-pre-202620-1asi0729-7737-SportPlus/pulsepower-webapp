@@ -1,0 +1,189 @@
+<pp-page-heading
+  [title]="'Sleep — Summary' | t"
+  [description]="'Your rest, understood one night at a time.' | t"
+  [eyebrow]="'REST AND RECHARGE' | t"
+><button mat-flat-button class="btn primary" (click)="open(editor)">
+  <pp-icon name="plus" /> {{ 'Log night' | t }}
+</button></pp-page-heading
+>
+<pp-feedback [error]="store.error()" [message]="store.message()" />
+<div class="grid-4">
+  <pp-metric-card
+    [label]="'LATEST SLEEP' | t"
+    [value]="store.latestDuration()"
+    [detail]="'Your most recent recorded night' | t"
+    icon="sleep"
+  />
+  <pp-metric-card
+    [label]="'SLEEP SCORE' | t"
+    [value]="store.latest()?.sleepScore ?? '—'"
+    [detail]="'Available with synchronized device data' | t"
+    icon="pulse"
+  />
+  <pp-metric-card
+    [label]="'7-DAY AVERAGE' | t"
+    [value]="store.average()"
+    unit="hours"
+    [detail]="'Average of recorded sleep periods' | t"
+    icon="calendar"
+  />
+  <pp-metric-card
+    [label]="'SLEEP TARGET' | t"
+    [value]="store.routine()?.targetHours ?? '—'"
+    unit="hours"
+    [detail]="'Your personal rest goal' | t"
+    icon="wellness"
+  />
+</div>
+<pp-sleep-insights />
+<div class="content-split mt">
+  <section class="panel">
+    <div class="panel-heading">
+      <div>
+        <h2>{{ 'Sleep duration — Last 7 days' | t }}</h2>
+        <p>{{ 'Sleep periods grouped by wake-up date' | t }}</p>
+      </div>
+      <span class="badge purple">{{ 'Hours' | t }}</span>
+    </div>
+    <pp-trend-chart
+      [points]="store.chart()"
+      color="#a78bfa"
+      [description]="'Recorded sleep hours per day.' | t"
+    />
+  </section>
+  <section class="panel">
+    <div class="panel-heading">
+      <h2>{{ 'Your sleep routine' | t }}</h2>
+      <pp-icon name="sleep" />
+    </div>
+    @if (store.routine(); as routine) {
+      <div class="routine-times">
+        <div>
+          <small>{{ 'BEDTIME' | t }}</small
+          ><strong>{{ routine.bedtime | t }}</strong>
+        </div>
+        <span>→</span>
+        <div>
+          <small>{{ 'WAKE UP' | t }}</small
+          ><strong>{{ routine.wakeTime | t }}</strong>
+        </div>
+      </div>
+      <p>{{ routine.targetHours | t }} {{ 'hours of planned rest' | t }}</p>
+    } @else {
+      <p>{{ 'Set the bedtime, wake-up time and sleep target that fit your routine.' | t }}</p>
+    }
+    <button mat-button class="btn secondary mt" (click)="openRoutine(routineEditor)">
+      {{ 'Edit sleep routine' | t }}
+    </button>
+    <div class="notice mt">
+      {{
+        'Manual sleep entries include duration and notes. Sleep stages and device scores require a connected wearable.'
+          | t
+      }}
+    </div>
+  </section>
+</div>
+<section class="panel mt">
+  <div class="panel-heading">
+    <div>
+      <h2>{{ 'Sleep — Last 30 days' | t }}</h2>
+      <p>{{ 'Daily duration by wake-up date. Labels: month-day.' | t }}</p>
+    </div>
+    <span class="badge purple">{{ store.recordedMonthDays() | t }} / 30</span>
+  </div>
+  @if (store.recordedMonthDays() < 30) {
+    <p class="notice" role="status">
+      {{ 'Incomplete period: only recorded days are shown; missing days are not zero hours.' | t }}
+    </p>
+  }
+  <pp-trend-chart
+    [points]="store.monthChart()"
+    color="#a78bfa"
+    [description]="
+      'Sleep duration in hours over the last 30 days. Scroll to explore all dates.' | t
+    "
+  />
+  <p class="mt">{{ 'Sleep quality and stages require synchronized device data.' | t }}</p>
+</section>
+<pp-sleep-record-list [records]="store.history()" />
+<pp-form-dialog routeEntry #editor [title]="'Log a night of sleep' | t"
+><pp-feedback [error]="store.error()" />
+  <form #sleepForm="ngForm" (ngSubmit)="save(editor)">
+    <div class="form-grid">
+      <mat-form-field appearance="outline" subscriptSizing="dynamic" class="field full"
+      ><mat-label>{{ 'Bedtime' | t }}</mat-label
+      ><input
+        matInput
+        name="startedAt"
+        type="datetime-local"
+        [(ngModel)]="form.startedAt"
+        required
+      /></mat-form-field>
+      <mat-form-field appearance="outline" subscriptSizing="dynamic" class="field full"
+      ><mat-label>{{ 'Wake-up time' | t }}</mat-label
+      ><input matInput name="endedAt" type="datetime-local" [(ngModel)]="form.endedAt" required
+      /></mat-form-field>
+      <mat-form-field appearance="outline" subscriptSizing="dynamic" class="field full"
+      ><mat-label>{{ 'Notes' | t }}</mat-label
+      ><textarea
+        matInput
+        name="notes"
+        [(ngModel)]="form.notes"
+        maxlength="2000"
+        [placeholder]="'Anything you noticed about your rest' | t"
+      ></textarea>
+      </mat-form-field>
+    </div>
+    <div class="form-actions">
+      <button mat-button type="button" class="btn secondary" (click)="editor.close()">
+        {{ 'Cancel' | t }}</button
+      ><button mat-flat-button class="btn primary" [disabled]="sleepForm.invalid || store.busy()">
+      {{ 'Save night' | t }}
+    </button>
+    </div>
+  </form></pp-form-dialog
+>
+<pp-form-dialog #routineEditor [title]="'Your sleep routine' | t"
+><pp-feedback [error]="store.error()" />
+  <form #routineForm="ngForm" (ngSubmit)="saveRoutine(routineEditor)">
+    <div class="form-grid">
+      <mat-form-field appearance="outline" subscriptSizing="dynamic" class="field"
+      ><mat-label>{{ 'Target bedtime' | t }}</mat-label
+      ><input
+        matInput
+        name="bedtime"
+        type="time"
+        [(ngModel)]="routine.bedtime"
+        required /></mat-form-field
+      ><mat-form-field appearance="outline" subscriptSizing="dynamic" class="field"
+    ><mat-label>{{ 'Target wake-up' | t }}</mat-label
+    ><input matInput name="wakeTime" type="time" [(ngModel)]="routine.wakeTime" required
+    /></mat-form-field>
+      <mat-form-field appearance="outline" subscriptSizing="dynamic" class="field full"
+      ><mat-label>{{ 'Sleep target (hours)' | t }}</mat-label
+      ><input
+        matInput
+        name="targetHours"
+        type="number"
+        [(ngModel)]="routine.targetHours"
+        min="1"
+        max="24"
+        step="0.5"
+        required
+      /></mat-form-field>
+    </div>
+    <mat-checkbox name="reminderEnabled" [(ngModel)]="routine.reminderEnabled">{{
+        'Save a reminder preference for bedtime' | t
+      }}</mat-checkbox>
+    <p class="mt">
+      {{ 'Preference saved on this device. Notification delivery is not connected yet.' | t }}
+    </p>
+    <div class="form-actions">
+      <button mat-button type="button" class="btn secondary" (click)="routineEditor.close()">
+        {{ 'Cancel' | t }}</button
+      ><button mat-flat-button class="btn primary" [disabled]="routineForm.invalid || store.busy()">
+      {{ 'Save routine' | t }}
+    </button>
+    </div>
+  </form></pp-form-dialog
+>

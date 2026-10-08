@@ -1,0 +1,49 @@
+:host {
+  display: block;
+}
+.stages {
+  display: flex;
+  gap: 16px;
+  overflow-x: auto;
+  height: 260px;
+  margin-top: 28px;
+}
+.column {
+  flex: 1;
+  min-width: 28px;
+  text-align: center;
+  font-size: 11px;
+  color: var(--muted);
+}
+.stack {
+  gap: 0;
+  height: 210px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  margin: 0 auto 12px;
+  max-width: 36px;
+}
+.legend {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 16px;
+  margin-top: 20px;
+  font-size: 12px;
+}
+.legend span {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+i {
+  width: 12px;
+  height: 12px;
+}
+.empty {
+  min-height: 240px;
+  display: grid;
+  place-content: center;
+  color: var(--muted);
+}

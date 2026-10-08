@@ -1,0 +1,162 @@
+<pp-page-heading
+  [title]="'Wellness — Summary' | t"
+  [description]="'Make space for how you feel.' | t"
+  [eyebrow]="'SMALL HABITS, EVERY DAY' | t"
+><button mat-flat-button class="btn primary" (click)="checkInEditor.open()">
+  <pp-icon name="plus" /> {{ 'Log check-in' | t }}
+</button></pp-page-heading
+>
+<pp-feedback [error]="store.error()" [message]="store.message()" />
+<div class="grid-3">
+  <pp-metric-card
+    [label]="'AVG. STRESS THIS WEEK' | t"
+    [value]="store.averageStress()"
+    unit="/10"
+    [detail]="'Self-reported perceived stress' | t"
+    icon="pulse"
+  /><pp-metric-card
+  [label]="'AVG. OVERALL STATE' | t"
+  [value]="store.averageMood()"
+  unit="/5"
+  [detail]="'Your daily check-ins' | t"
+  icon="wellness"
+/><pp-metric-card
+  [label]="'CHECK-INS THIS WEEK' | t"
+  [value]="store.weekCheckIns().length"
+  unit="/7 days"
+  [detail]="'Stay in touch with your wellbeing' | t"
+  icon="calendar"
+/>
+</div>
+<div class="content-split mt">
+  <section class="panel">
+    <div class="panel-heading">
+      <div>
+        <h2>{{ 'Stress and mood — Last 7 days' | t }}</h2>
+        <p>{{ 'Your own observations, over time' | t }}</p>
+      </div>
+      <span class="badge purple">{{ 'Mood /5 · Stress /10' | t }}</span>
+    </div>
+    <pp-line-chart
+      [series]="store.trendSeries()"
+      [description]="'Daily check-ins for the selected period.' | t"
+    />
+  </section>
+  <section class="panel">
+    <div class="panel-heading">
+      <h2>{{ 'Your habits' | t }}</h2>
+      <button mat-button class="btn text small" (click)="habitEditor.open()">
+        <pp-icon name="plus" /> {{ 'Add habit' | t }}
+      </button>
+    </div>
+    @for (habit of store.habits(); track habit.id) {
+      <div class="habit-row">
+        <div class="record-row">
+          <button
+            class="habit-toggle"
+            [class.done]="habit.completedToday"
+            [attr.aria-label]="
+              (habit.completedToday ? 'Undo ' : 'Complete ') + habit.name + ' today' | t
+            "
+            [attr.aria-pressed]="habit.completedToday"
+            (click)="store.toggleHabit(habit.id)"
+            [disabled]="store.busy()"
+          >
+            <pp-icon name="check" />
+          </button>
+          <div class="record-main">
+            <strong>{{ habit.name | t }}</strong>
+            <p>
+              {{ habit.completedThisWeek | t }} / {{ habit.weeklyTarget | t }}
+              {{ 'days this week' | t }}
+            </p>
+          </div>
+        </div>
+        <div class="progress-track">
+          <div
+            class="progress-fill"
+            [style.width.%]="(habit.completedThisWeek / habit.weeklyTarget) * 100"
+          ></div>
+        </div>
+      </div>
+    } @empty {
+      <pp-empty-state
+        icon="wellness"
+        [title]="'Start with one small habit' | t"
+        [description]="'Add a habit and track the days you follow through.' | t"
+      />
+    }
+  </section>
+</div>
+<pp-check-in-list [checkIns]="store.checkIns()" />
+<pp-stress-sleep-summary />
+<pp-form-dialog routeEntry #checkInEditor [title]="'Your daily check-in' | t"
+><pp-feedback [error]="store.error()" /><pp-check-in-form
+  [date]="store.today"
+  [initial]="store.todayCheckIn()"
+  [busy]="store.busy()"
+  (submitted)="saveCheckIn($event, checkInEditor)"
+/></pp-form-dialog>
+<pp-form-dialog #habitEditor [title]="'Add a wellbeing habit' | t"
+><pp-feedback [error]="store.error()" />
+  <form #habitForm="ngForm" (ngSubmit)="saveHabit(habitEditor)">
+    <div class="form-grid">
+      <mat-form-field appearance="outline" subscriptSizing="dynamic" class="field full"
+      ><mat-label>{{ 'Habit name' | t }}</mat-label
+      ><input
+        matInput
+        name="habitName"
+        [(ngModel)]="habitName"
+        required
+        maxlength="80"
+        [placeholder]="'e.g. Digital detox before bed' | t" /></mat-form-field
+      ><mat-form-field appearance="outline" subscriptSizing="dynamic" class="field full"
+    ><mat-label>{{ 'Weekly target (days)' | t }}</mat-label
+    ><input
+      matInput
+      name="habitTarget"
+      type="number"
+      [(ngModel)]="habitTarget"
+      min="1"
+      max="7"
+      step="1"
+      required
+    /></mat-form-field>
+    </div>
+    <div class="form-actions">
+      <button mat-button type="button" class="btn secondary" (click)="habitEditor.close()">
+        {{ 'Cancel' | t }}</button
+      ><button mat-flat-button class="btn primary" [disabled]="habitForm.invalid || store.busy()">
+      {{ 'Save habit' | t }}
+    </button>
+    </div>
+  </form></pp-form-dialog
+>
+
+<section class="panel mt">
+  <h2>{{ 'Guided breathing' | t }}</h2>
+  <p>{{ 'One minute at your own pace. Stop whenever you need to.' | t }}</p>
+  <pp-feedback [error]="breathing.error()" />
+  @if (breathing.isRunning()) {
+    <p aria-live="polite">{{ breathing.phase() | t }}</p>
+    <p>{{ breathing.remaining() }} s</p>
+    <button mat-button class="btn secondary" (click)="breathing.finish()">
+      {{ 'Stop session' | t }}
+    </button>
+  } @else {
+    <button
+      mat-flat-button
+      class="btn primary"
+      [disabled]="breathing.busy()"
+      (click)="breathing.start()"
+    >
+      {{ 'Start breathing session' | t }}
+    </button>
+  }
+  @for (session of breathing.sessions(); track session.id) {
+    <p>
+      {{ session.endedAt.slice(0, 10) }} ·
+      {{ (session.completed ? 'Completed' : 'Interrupted') | t }}
+    </p>
+  }
+</section>

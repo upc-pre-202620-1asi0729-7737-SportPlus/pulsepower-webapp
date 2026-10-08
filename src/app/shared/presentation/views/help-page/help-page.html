@@ -1,0 +1,72 @@
+<pp-page-heading
+  [title]="'Help center' | t"
+  [description]="'Find answers and explore support.' | t"
+/>
+<section class="panel">
+  <mat-form-field appearance="outline" subscriptSizing="dynamic" class="field"
+    ><mat-label>{{ 'Search help articles' | t }}</mat-label
+    ><input
+      matInput
+      type="search"
+      [ngModel]="store.query()"
+      (ngModelChange)="store.query.set($event)"
+  /></mat-form-field>
+  <div aria-live="polite">
+    @for (article of store.results(); track article.title) {
+      <article class="mt">
+        <h2>{{ article.title | t }}</h2>
+        <p>{{ article.body | t }}</p>
+        <a mat-button class="btn text" [routerLink]="article.path">{{ 'Open section' | t }}</a>
+      </article>
+    } @empty {
+      <p class="notice mt">{{ 'No articles found. You can contact support below.' | t }}</p>
+      <a href="#support">{{ 'Contact support' | t }}</a>
+    }
+  </div>
+</section>
+<section class="panel mt" id="support">
+  <h2>{{ 'Contact support' | t }}</h2>
+  <p>
+    {{
+      'Demo form: the reference is simulated, is not sent to support and is kept only for this visit.'
+        | t
+    }}
+  </p>
+  <pp-feedback [error]="store.error()" [message]="store.message()" />
+  <form #supportForm="ngForm" (ngSubmit)="store.createSupportDraft(description)">
+    <mat-form-field appearance="outline" subscriptSizing="dynamic" class="field mt"
+      ><mat-label>{{ 'Problem description' | t }}</mat-label
+      ><textarea
+        matInput
+        name="description"
+        [(ngModel)]="description"
+        required
+        maxlength="2000"
+      ></textarea></mat-form-field
+    ><button mat-flat-button class="btn primary mt" [disabled]="store.busy()">
+      {{ 'Simulate support request' | t }}
+    </button>
+  </form>
+  @if (store.supportDraft(); as draft) {
+    <div class="notice mt" role="status">
+      <div>
+        <strong>{{ 'Simulation reference' | t }}: {{ draft.reference }}</strong>
+        <p>{{ draft.description }}</p>
+      </div>
+    </div>
+  }
+</section>
+
+<section class="panel mt">
+  <h2>{{ 'Local support history' | t }}</h2>
+  <p>{{ 'These requests are simulated and are not sent to a support team.' | t }}</p>
+  @for (ticket of store.tickets(); track ticket.reference) {
+    <article class="record-row">
+      <div>
+        <strong>{{ ticket.reference }}</strong>
+        <p>{{ ticket.description }}</p>
+        <small>{{ ticket.createdAt.slice(0, 10) }}</small>
+      </div>
+    </article>
+  }
+</section>

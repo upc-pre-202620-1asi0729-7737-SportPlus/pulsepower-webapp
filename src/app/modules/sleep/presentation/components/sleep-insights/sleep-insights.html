@@ -1,0 +1,55 @@
+@if (insights.demo) {
+  <p class="notice mt">{{ 'chart.sleepDemo' | t }}</p>
+}
+<div class="content-split mt">
+  <section class="panel">
+    <h2>{{ 'Sleep stages — Last night' | t }}</h2>
+    @if (insights.stages().length) {
+      <div class="stages" role="img" [attr.aria-label]="'chart.sleepDemo' | t">
+        @for (hour of insights.stages(); track hour.label) {
+          <div class="column">
+            <div class="stack">
+              @for (i of [0, 2, 3, 1]; track i) {
+                <div
+                  [style.height.%]="(hour.values[i]! / 60) * 100"
+                  [style.background]="insights.legend[i]!.color"
+                  [attr.title]="(insights.legend[i]!.label | t) + ': ' + hour.values[i] + ' min'"
+                ></div>
+              }
+            </div>
+            <span>{{ hour.label }}</span>
+          </div>
+        }
+      </div>
+      <div class="legend">
+        @for (stage of insights.legend; track stage.label) {
+          <span><i [style.background]="stage.color"></i>{{ stage.label | t }}</span>
+        }
+      </div>
+    } @else {
+      <p class="empty">{{ 'Sleep quality and stages require synchronized device data.' | t }}</p>
+    }
+  </section>
+  <section class="panel">
+    <h2>{{ 'Weekly score' | t }}</h2>
+    <pp-line-chart
+      [series]="insights.scores()"
+      [description]="
+        insights.demo
+          ? 'chart.sleepDemo'
+          : 'Sleep quality and stages require synchronized device data.'
+      "
+    />
+  </section>
+</div>
+
+<section class="panel mt">
+  <h2>{{ 'Monthly sleep quality' | t }}</h2>
+  <p class="notice">
+    {{
+      'Demo scores show the percentage of your sleep target reached. They are not measured sleep quality.'
+        | t
+    }}
+  </p>
+  <pp-line-chart [series]="insights.monthScores()" [description]="'Monthly sleep quality' | t" />
+</section>

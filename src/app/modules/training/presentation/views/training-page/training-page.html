@@ -1,0 +1,79 @@
+<pp-page-heading
+  [title]="'Training — Summary' | t"
+  [description]="'Your weekly performance overview.' | t"
+  [eyebrow]="'MOVE WITH PURPOSE' | t"
+>
+  <button mat-flat-button class="btn primary" (click)="open(editor)">
+    <pp-icon name="plus" /> {{ 'Log session' | t }}
+  </button>
+</pp-page-heading>
+<pp-feedback [error]="store.error()" [message]="store.message()" />
+<div class="grid-3">
+  <pp-metric-card
+    [label]="'SESSIONS THIS WEEK' | t"
+    [value]="store.weekSessions().length"
+    [detail]="'Completed training sessions' | t"
+    icon="training"
+  />
+  <pp-metric-card
+    [label]="'TRAINING TIME' | t"
+    [value]="store.totalMinutes()"
+    unit="min"
+    [detail]="'Recorded this week' | t"
+    icon="calendar"
+  />
+  <pp-metric-card
+    [label]="'AVG. PERCEIVED EFFORT' | t"
+    [value]="store.averageEffort()"
+    unit="/10"
+    [detail]="'Your reported session effort' | t"
+    icon="pulse"
+  />
+</div>
+<div class="content-split mt">
+  <section class="panel">
+    <div class="panel-heading">
+      <div>
+        <h2>{{ 'Training time — Last 8 days' | t }}</h2>
+        <p>{{ 'Based on your recorded sessions' | t }}</p>
+      </div>
+      <span class="badge green">{{ 'Minutes' | t }}</span>
+    </div>
+    <pp-line-chart
+      [series]="store.trendSeries()"
+      [area]="true"
+      [description]="'Recorded minutes over the last eight days.' | t"
+    />
+  </section>
+  <section class="panel">
+    <div class="panel-heading">
+      <h2>{{ 'Your next session' | t }}</h2>
+      <pp-icon name="calendar" />
+    </div>
+    <p>{{ 'Keep your planned workouts and active rest days together.' | t }}</p>
+    <a mat-button class="btn secondary mt" routerLink="/planning"
+      >{{ 'Open training plan' | t }} <pp-icon name="arrow"
+    /></a>
+    <div class="notice mt">
+      <pp-icon name="spark" />
+      <div>
+        <strong>{{ 'Recovery-aware training' | t }}</strong
+        >{{
+          'Personalized adjustments will be available when your physiological analysis is connected.'
+            | t
+        }}
+      </div>
+    </div>
+  </section>
+</div>
+<pp-session-list [sessions]="store.sessions()" [busy]="store.busy()" />
+<pp-form-dialog routeEntry #editor [title]="'Log a training session' | t">
+  <pp-feedback [error]="store.error()" />
+  <pp-session-form
+    [initial]="form"
+    [activities]="store.activities()"
+    [busy]="store.busy()"
+    (submitted)="save($event, editor)"
+    (cancelled)="editor.close()"
+  />
+</pp-form-dialog>

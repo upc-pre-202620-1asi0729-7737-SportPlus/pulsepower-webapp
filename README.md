@@ -1,59 +1,48 @@
-# Untitled
+# PulsePower
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 22.2.2.
+PulsePower es una plataforma de SportPlus que ayuda a organizar el entrenamiento, el sueño y el bienestar. Permite registrar actividades diarias y consultar el progreso mediante resúmenes, gráficos y reportes.
 
-## Development server
+## ¿Qué puedes hacer?
 
-To start a local development server, run:
+- Crear una cuenta local y personalizar tu perfil y objetivos.
+- Registrar entrenamientos y planificar actividades en un calendario.
+- Registrar tus noches de sueño y configurar una rutina de descanso.
+- Completar registros de bienestar, hábitos y ejercicios de respiración.
+- Consultar información de recuperación simulada y generar reportes PDF.
+- Explorar las funciones de comunidad y suscripción en modo demostración.
 
-```bash
-ng serve
-```
+La versión actual funciona solo como frontend: guarda los datos en el navegador y utiliza simulaciones para las funciones que necesitan servicios externos. No realiza diagnósticos médicos ni cobros.
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+La interfaz está disponible en inglés y español. El idioma inicial es inglés y se conserva tu preferencia al cambiarlo.
 
-## Code scaffolding
+# PulsePower - cómo ejecutar
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+1. Node 22.22.3+ (rama 22) o 24.15+ (rama 24). Revisa con: node -v
+2. Abre la terminal DENTRO de esta carpeta (donde está package.json)
+3. npm ci
+4. npm start
+5. Abre http://localhost:4200/
+   Cuenta demo: pulsepower@gmail.com / 123456
 
-```bash
-ng generate component component-name
-```
+Comprobaciones: npm run build | npm test | npm run check:architecture | npm run format:check
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
 
-```bash
-ng generate --help
-```
+**Cuenta de demostración:** `pulsepower@gmail.com` · **Contraseña:** `123456`.
 
-## Building
+## Tecnologías y organización
 
-To build the project run:
+Angular con componentes standalone, TypeScript y Angular Material. El tema de Material se define en `src/material-theme.scss`, con los colores de PulsePower y la fuente Rubik.
 
-```bash
-ng build
-```
+Los siete contextos están en `src/app/modules`: `iam`, `training`, `sleep`, `wellness`, `physiology`, `reports` y `community`. Cada uno tiene las capas `domain`, `application`, `infrastructure` y `presentation`. Los elementos compartidos están en `src/app/shared`.
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
+## Comandos
 
-## Running unit tests
-
-To execute unit tests with the [Vitest](https://vitest.dev/) test runner, use the following command:
-
-```bash
-ng test
-```
-
-## Running end-to-end tests
-
-For end-to-end (e2e) testing, run:
-
-```bash
-ng e2e
-```
-
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
-
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+| Comando                      | Uso                                             |
+| ---------------------------- | ----------------------------------------------- |
+| `npm start`                  | Iniciar el servidor de desarrollo.              |
+| `npm run build`              | Compilar para producción.                       |
+| `npm run preview`            | Ver la versión de producción en localhost:4300. |
+| `npm test`                   | Ejecutar las pruebas.                           |
+| `npm run check:architecture` | Verificar las reglas de arquitectura.           |
+| `npm run format`             | Formatear el código.                            |
+| `npm run format:check`       | Comprobar el formato.                           |

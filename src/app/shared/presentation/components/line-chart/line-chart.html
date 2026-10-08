@@ -1,0 +1,82 @@
+@if (hasData()) {
+  <svg viewBox="0 0 700 250" role="img" [attr.aria-label]="description() | t">
+    <title>{{ description() | t }}</title>
+    @for (y of [28, 73, 118, 163, 208]; track y) {
+      <line x1="36" x2="664" [attr.y1]="y" [attr.y2]="y" class="grid-line" />
+    }
+    @for (series of charts(); track series.label) {
+      @for (segment of series.segments; track $index) {
+        @if (area()) {
+          <path [attr.d]="segment.area" [attr.fill]="series.color" opacity="0.10" />
+        }
+        <path
+          [attr.d]="segment.line"
+          [attr.stroke]="series.color"
+          fill="none"
+          stroke-width="3"
+          stroke-linejoin="round"
+        />
+        @for (point of segment.points; track point.x) {
+          <circle [attr.cx]="point.x" [attr.cy]="point.y" r="4.5" [attr.fill]="series.color">
+            <title>
+              {{ series.label | t }} · {{ point.label | t }}: {{ point.value }}
+              {{ series.unit | t }}
+            </title>
+          </circle>
+        }
+      }
+    }
+    @for (label of labels(); track $index) {
+      <text
+        [attr.x]="36 + ($index * 628) / (labels().length > 1 ? labels().length - 1 : 1)"
+        y="239"
+        text-anchor="middle"
+      >
+        {{ label | t }}
+      </text>
+    }
+  </svg>
+  <div class="legend">
+    @for (series of series(); track series.label) {
+      <span
+        ><i [style.background]="series.color"></i>{{ series.label | t }} ({{
+          series.unit | t
+        }})</span
+      >
+    }
+  </div>
+  @if (normalized()) {
+    <p class="caption">{{ 'chart.normalized' | t }}</p>
+  }
+  <details>
+    <summary>{{ 'chart.values' | t }}</summary>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>{{ 'Date' | t }}</th>
+            @for (series of series(); track series.label) {
+              <th>{{ series.label | t }} ({{ series.unit | t }})</th>
+            }
+          </tr>
+        </thead>
+        <tbody>
+          @for (label of labels(); track $index; let i = $index) {
+            <tr>
+              <td>{{ label | t }}</td>
+              @for (series of series(); track series.label) {
+                <td>{{ series.points[i]?.value ?? 'No data' | t }}</td>
+              }
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  </details>
+} @else {
+  <div class="empty" role="status">
+    <strong>{{ 'chart.emptyTitle' | t }}</strong>
+    <p>{{ 'chart.emptyDescription' | t }}</p>
+  </div>
+}
+<p class="caption">{{ description() | t }}</p>

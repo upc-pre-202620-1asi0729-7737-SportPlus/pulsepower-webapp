@@ -1,0 +1,98 @@
+<h1 class="sr-only">{{ 'Home — Your daily overview' | t }}</h1>
+<pp-feedback
+  [error]="
+    store.wellness.error() ||
+    store.training.error() ||
+    store.sleep.error() ||
+    store.physiology.error()
+  "
+  [message]="store.wellness.message()"
+/>
+<div class="home-overview">
+  <section class="dark-panel checkin-panel">
+    <span class="eyebrow">{{ 'YOUR DAILY CHECK-IN' | t }}</span>
+    <h2>{{ 'How are you feeling today?' | t }}</h2>
+    <pp-check-in-form
+      [compact]="true"
+      [date]="store.wellness.today"
+      [initial]="store.wellness.todayCheckIn()"
+      [busy]="store.wellness.busy()"
+      (submitted)="store.saveCheckIn($event)"
+    />
+  </section>
+  <div class="home-metrics">
+    <pp-metric-card
+      [label]="'MORNING HRV' | t"
+      [value]="store.physiology.hrv()?.value ?? '—'"
+      unit="ms"
+      [detail]="'Waiting for synchronized measurements' | t"
+      icon="pulse"
+    />
+    <pp-metric-card
+      [label]="'RESTING HR' | t"
+      [value]="store.physiology.restingHeartRate()?.value ?? '—'"
+      unit="bpm"
+      [detail]="'Waiting for synchronized measurements' | t"
+      icon="wellness"
+    />
+    <pp-metric-card
+      [label]="'LATEST SLEEP' | t"
+      [value]="store.sleep.latestDuration()"
+      [detail]="
+        store.sleep.latest()
+          ? 'Your latest recorded sleep period'
+          : 'Log a night to start your sleep history'
+      "
+      icon="sleep"
+    />
+    <pp-metric-card
+      [label]="'RECOVERY' | t"
+      [value]="store.physiology.assessment()?.level ?? '—'"
+      unit="%"
+      [detail]="'Your recovery assessment will appear here' | t"
+      icon="spark"
+    />
+  </div>
+</div>
+<div class="home-bottom mt">
+  <section class="panel">
+    <div class="panel-heading">
+      <div>
+        <h2>{{ 'Training time — This week' | t }}</h2>
+        <p>
+          {{ store.training.weekSessions().length | t }} {{ 'sessions recorded ·' | t }}
+          {{ store.training.totalMinutes() | t }} {{ 'minutes' | t }}
+        </p>
+      </div>
+      <a mat-button class="btn text small" routerLink="/training"
+        >{{ 'View training' | t }} <pp-icon name="arrow"
+      /></a>
+    </div>
+    <pp-trend-chart
+      [points]="store.training.chart()"
+      [description]="'Recorded training minutes per day.' | t"
+    />
+  </section>
+  <section class="dark-panel recommendation-panel">
+    <span class="eyebrow">{{ 'DAILY GUIDANCE' | t }}</span
+    ><pp-icon name="spark" />
+    <h2>{{ 'Your next insight starts' | t }}<br />{{ 'with your data.' | t }}</h2>
+    <p>
+      {{
+        'Personalized guidance will appear when your wearable and analysis service are connected.'
+          | t
+      }}
+    </p>
+    <a mat-button class="btn recommendation-action" routerLink="/planning"
+      >{{ "View today's plan" | t }} <pp-icon name="arrow" /></a
+    ><a class="recovery-link" routerLink="/recovery">{{ 'Explore recovery & insights' | t }}</a>
+  </section>
+</div>
+<div class="notice mt">
+  <pp-icon name="device" />
+  <div>
+    <strong>{{ 'Your local workspace is ready' | t }}</strong
+    >{{ 'Training sessions, sleep records and wellbeing check-ins are saved in this browser.' | t }}
+    <a routerLink="/settings">{{ 'Set up your profile' | t }}</a> {{ 'to make it yours.' | t }}
+  </div>
+</div>

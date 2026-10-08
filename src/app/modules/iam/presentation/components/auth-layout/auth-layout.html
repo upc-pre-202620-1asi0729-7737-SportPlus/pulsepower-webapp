@@ -1,0 +1,53 @@
+<div class="auth-layout">
+  <aside class="auth-story" [attr.aria-label]="'auth.previewMetrics' | t">
+    <div class="story-orbit" aria-hidden="true"></div>
+    <div class="metric-preview sleep-preview">
+      <span>{{ 'auth.lastNight' | t }}</span>
+      <strong>7h 24m</strong>
+      <p>{{ 'auth.sleepScore' | t }}</p>
+      <div class="preview-track"><div></div></div>
+    </div>
+    <div class="metric-preview hrv-preview">
+      <span>{{ 'auth.today' | t }}</span>
+      <strong>{{ 'auth.hrv' | t }}</strong>
+      <p>{{ 'auth.hrvChange' | t }}</p>
+    </div>
+    <div class="story-copy">
+      <span class="story-eyebrow">{{ 'SLEEP. TRAIN. RECOVER.' | t }}</span>
+      <h2>{{ 'Your biometrics,' | t }}<br />{{ 'one clear view.' | t }}</h2>
+      <p>{{ 'auth.story' | t }}</p>
+    </div>
+    <div class="story-rings" aria-hidden="true"><span>⌚</span></div>
+  </aside>
+  <main class="auth-main">
+    <select
+      class="auth-language"
+      [attr.aria-label]="'Language' | t"
+      [value]="i18n.locale()"
+      (change)="i18n.setLocale($any($event.target).value)"
+    >
+      <option value="es">Español</option>
+      <option value="en">English</option>
+    </select>
+    <div class="auth-content">
+      <img
+        class="auth-logo"
+        src="assets/pulsepower-logo.png"
+        alt="PulsePower"
+        width="144"
+        height="108"
+      />
+      <ng-content />
+      <footer class="legal-footer">
+        <a routerLink="/terms">{{ 'legal.terms.title' | t }}</a
+        ><a routerLink="/privacy">{{ 'legal.privacy.title' | t }}</a>
+        <a routerLink="/help">{{ 'Help center' | t }}</a>
+        <p class="footer-tagline">
+          <strong>PulsePower</strong><br />{{
+            'Your body speaks every day. Our platform translates it.' | t
+          }}
+        </p>
+      </footer>
+    </div>
+  </main>
+</div>

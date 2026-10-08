@@ -1,0 +1,38 @@
+<section class="panel mt">
+  <div class="panel-heading">
+    <h2>{{ 'Check-in history' | t }}</h2>
+    <span class="badge">{{ checkIns().length | t }} {{ 'check-ins' | t }}</span>
+  </div>
+  @if (checkIns().length) {
+    <div class="table-wrap">
+      <table>
+        <thead>
+        <tr>
+          <th>{{ 'Date' | t }}</th>
+          <th>{{ 'Overall state' | t }}</th>
+          <th>{{ 'Stress' | t }}</th>
+          <th>{{ 'Discomfort' | t }}</th>
+          <th>{{ 'Notes' | t }}</th>
+        </tr>
+        </thead>
+        <tbody>
+          @for (row of checkIns(); track row.id) {
+            <tr>
+              <td>{{ row.date | localDate: 'MMM d, y' | t }}</td>
+              <td>{{ row.mood | t }}/5</td>
+              <td>{{ row.stress | t }}/10</td>
+              <td>{{ (row.discomfort ? 'Reported' : 'Not reported') | t }}</td>
+              <td>{{ row.notes || '—' | t }}</td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  } @else {
+    <pp-empty-state
+      icon="wellness"
+      [title]="'How are you feeling today?' | t"
+      [description]="'Your first check-in is a moment to pause and notice.' | t"
+    />
+  }
+</section>

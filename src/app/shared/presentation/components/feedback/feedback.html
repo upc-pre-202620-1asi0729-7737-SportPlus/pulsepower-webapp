@@ -1,0 +1,6 @@
+@if (error()) {
+  <div class="feedback error" role="alert">{{ error() | t }}</div>
+}
+@if (message()) {
+  <div class="feedback success" role="status">{{ message() | t }}</div>
+}

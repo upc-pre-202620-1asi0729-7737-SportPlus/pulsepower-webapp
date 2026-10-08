@@ -1,0 +1,235 @@
+<pp-page-heading
+  [title]="'Recovery & insights' | t"
+  [description]="'Connect your signals to understand your body.' | t"
+  [eyebrow]="'PHYSIOLOGICAL ANALYSIS' | t"
+><span class="badge" [class.green]="store.connection()?.status === 'Connected'"
+><pp-icon name="device" />
+  {{ store.connection()?.status ?? 'Wearable not connected' | t }}</span
+></pp-page-heading
+>
+<pp-feedback [error]="store.error()" [message]="store.message()" />
+@if (workspace.mode === 'demo') {
+  <p class="notice mb">
+    {{
+      'Demonstration only: sleep hours, stress and perceived effort are used, not wearable measurements.'
+        | t
+    }}
+  </p>
+}
+<div class="grid-3">
+  <pp-metric-card
+    [label]="'HEART RATE VARIABILITY' | t"
+    [value]="store.hrv()?.value ?? '—'"
+    unit="ms"
+    [detail]="
+      (workspace.mode === 'demo' ? 'Illustrative measurement' : 'Latest synchronized measurement')
+        | t
+    "
+    icon="pulse"
+  /><pp-metric-card
+  [label]="'RESTING HEART RATE' | t"
+  [value]="store.restingHeartRate()?.value ?? '—'"
+  unit="bpm"
+  [detail]="
+      (workspace.mode === 'demo' ? 'Illustrative measurement' : 'Latest synchronized measurement')
+        | t
+    "
+  icon="wellness"
+/><pp-metric-card
+  [label]="'RECOVERY' | t"
+  [value]="store.assessment()?.level ?? '—'"
+  unit="%"
+  [detail]="
+      (workspace.mode === 'demo'
+        ? 'Recovery simulation'
+        : 'Calculated from your physiological history'
+      ) | t
+    "
+  icon="spark"
+/>
+</div>
+<div class="grid-2 mt">
+  <section class="panel">
+    <div class="panel-heading">
+      <h2>{{ 'Your wearable' | t }}</h2>
+      <pp-icon name="device" />
+    </div>
+    @if (store.connection(); as connection) {
+      <p>{{ connection.provider | t }}</p>
+      <p>{{ 'Last synchronized:' | t }} {{ connection.lastSyncedAt | localDate: 'medium' | t }}</p>
+    } @else {
+      <pp-empty-state
+        icon="device"
+        [title]="'Your body has a story to tell' | t"
+        [description]="
+          'A connected wearable brings your physiological measurements into PulsePower.' | t
+        "
+      />
+    }
+    <button
+      mat-flat-button
+      class="btn primary"
+      [disabled]="!store.available() || store.busy()"
+      (click)="store.synchronize()"
+    >
+      {{ 'Synchronize wearable' | t }}
+    </button>
+    @if (workspace.mode === 'demo') {
+      <form
+        class="mt"
+        #deviceForm="ngForm"
+        (ngSubmit)="deviceForm.valid && store.deviceScenario(outcome, battery)"
+      >
+        <mat-form-field appearance="outline" subscriptSizing="dynamic" class="field"
+        ><mat-label>{{ 'Device simulation' | t }}</mat-label
+        ><mat-select name="outcome" [(ngModel)]="outcome">
+          <mat-option value="success">{{ 'Connected' | t }}</mat-option>
+          <mat-option value="denied">{{ 'Authorization denied' | t }}</mat-option>
+          <mat-option value="error">{{ 'Pending synchronization' | t }}</mat-option>
+          <mat-option value="disconnected">{{ 'Disconnected' | t }}</mat-option>
+        </mat-select></mat-form-field
+        >
+        <mat-form-field appearance="outline" subscriptSizing="dynamic" class="field mt"
+        ><mat-label>{{ 'Battery (%)' | t }}</mat-label
+        ><input
+          matInput
+          name="battery"
+          type="number"
+          min="0"
+          max="100"
+          required
+          [(ngModel)]="battery" /></mat-form-field
+        ><button
+        mat-button
+        class="btn secondary mt"
+        [disabled]="deviceForm.invalid || store.busy()"
+      >
+        {{ 'Apply simulated scenario' | t }}
+      </button>
+      </form>
+    }
+    @if (!store.available()) {
+      <div class="notice mt">
+        {{
+          'Wearable connection is not available in this local workspace. You can still record your training, sleep and wellbeing.'
+            | t
+        }}
+      </div>
+    }
+  </section>
+  <section class="panel">
+    <div class="panel-heading">
+      <h2>{{ 'Personalized recommendations' | t }}</h2>
+      <pp-icon name="spark" />
+    </div>
+    @for (recommendation of store.recommendations(); track recommendation.id) {
+      <article class="record-row">
+        <div class="record-main">
+          <strong>{{ recommendation.title | t }}</strong>
+          <p>{{ recommendation.explanation | t }}</p>
+          <p>{{ recommendation.suggestedAction | t }}</p>
+        </div>
+      </article>
+    } @empty {
+      <pp-empty-state
+        icon="spark"
+        [title]="'Insights grounded in your data' | t"
+        [description]="
+          'Recommendations will appear when physiological data and analysis are available.' | t
+        "
+      />
+    }
+  </section>
+</div>
+@if (workspace.mode === 'demo') {
+  <section class="panel mt">
+    <h2>{{ 'Weekly recovery comparison' | t }}</h2>
+    <p class="notice">
+      {{ 'Recovery simulation' | t }} ·
+      {{ 'This is an illustrative estimate, not a medical prediction.' | t }}
+    </p>
+    <pp-line-chart [series]="simulation.series()" [description]="'Recovery simulation' | t" />
+    @if (simulation.comparison().variation !== null) {
+      <p>{{ 'Change from the previous week' | t }}: {{ simulation.comparison().variation }}%</p>
+    } @else {
+      <p>{{ 'Record two complete weeks to compare recovery.' | t }}</p>
+    }
+  </section>
+}
+<section class="panel mt" id="assistant">
+  <div class="panel-heading">
+    <div>
+      <h2>{{ 'Recovery guide' | t }}</h2>
+      <p>{{ 'Ask about your sleep, strain and recovery.' | t }}</p>
+    </div>
+    <span class="badge purple">{{ 'Personal guidance' | t }}</span>
+  </div>
+  @for (message of store.conversation()?.messages ?? []; track message.id) {
+    <div class="assistant-message" [class.user-message]="message.role === 'user'">
+      <strong>{{ (message.role === 'user' ? 'You' : 'PulsePower') | t }}</strong>
+      <p>{{ message.content | t }}</p>
+    </div>
+  } @empty {
+    <pp-empty-state
+      icon="spark"
+      [title]="'Understand the story behind your numbers' | t"
+      [description]="
+        'The assistant needs a connected analysis service and authorized physiological history.' | t
+      "
+    />
+  }
+  <form class="assistant-input" (ngSubmit)="ask()">
+    <label class="sr-only" for="assistant-question">{{ 'Your question' | t }}</label
+    ><input
+    id="assistant-question"
+    name="question"
+    [(ngModel)]="question"
+    [placeholder]="'Ask about your recovery…' | t"
+    maxlength="2000"
+    [disabled]="!store.available()"
+  /><button
+    mat-flat-button
+    class="btn primary"
+    [disabled]="!store.available() || store.busy() || !question.trim()"
+  >
+    {{ 'Send' | t }} <pp-icon name="arrow" />
+  </button>
+  </form>
+</section>
+<section class="panel mt" id="alerts" [attr.aria-busy]="store.busy()">
+  <div class="panel-heading">
+    <h2>{{ 'Guidance alerts' | t }}</h2>
+    <button mat-button type="button" [disabled]="store.busy()" (click)="store.load()">
+      {{ 'alerts.refresh' | t }}
+    </button>
+  </div>
+  @if (store.busy()) {
+    <p role="status">{{ 'alerts.loading' | t }}</p>
+  } @else if (store.error()) {
+    <p role="status">{{ 'alerts.failed' | t }}</p>
+  } @else if (!store.available()) {
+    <p>{{ 'alerts.unavailable' | t }}</p>
+  } @else {
+    <p>{{ 'alerts.history' | t }}</p>
+    @for (alert of store.alerts(); track alert.id) {
+      <div class="notice mt">
+        <div>
+          <strong>{{ alert.title | t }}</strong>
+          <p>{{ alert.message | t }}</p>
+          <small>{{ alert.issuedAt | localDate: 'medium' | t }}</small>
+        </div>
+      </div>
+    } @empty {
+      <p class="mt" role="status">{{ 'alerts.empty' | t }}</p>
+    }
+    <details class="mt">
+      <summary>{{ 'alerts.conditions' | t }}</summary>
+      <ul>
+        <li>{{ 'alerts.trainingRule' | t }}</li>
+        <li>{{ 'alerts.sleepRule' | t }}</li>
+        <li>{{ 'alerts.batteryRule' | t }}</li>
+      </ul>
+      <p>{{ 'alerts.tryDemo' | t }}</p>
+    </details>
+  }
+</section>

@@ -1,0 +1,43 @@
+<section class="panel mt">
+  <div class="panel-heading">
+    <h2>{{ 'Session history' | t }}</h2>
+    <span class="badge">{{ sessions().length | t }} {{ 'sessions' | t }}</span>
+  </div>
+  @if (busy()) {
+    <p role="status">{{ 'Loading sessions…' | t }}</p>
+  }
+  @if (sessions().length) {
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>{{ 'Activity' | t }}</th>
+            <th>{{ 'Date' | t }}</th>
+            <th>{{ 'Duration' | t }}</th>
+            <th>{{ 'Effort' | t }}</th>
+            <th>{{ 'Notes' | t }}</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (session of sessions(); track session.id) {
+            <tr>
+              <td>
+                <strong>{{ session.activity | t }}</strong>
+              </td>
+              <td>{{ session.date | localDate: 'MMM d, y' | t }}</td>
+              <td>{{ session.durationMinutes | t }} {{ 'min' | t }}</td>
+              <td>{{ session.perceivedEffort | t }}/10</td>
+              <td>{{ session.notes || '—' | t }}</td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  } @else {
+    <pp-empty-state
+      icon="training"
+      [title]="'Your training story starts here' | t"
+      [description]="'Log a session to track your activity and effort over time.' | t"
+    />
+  }
+</section>

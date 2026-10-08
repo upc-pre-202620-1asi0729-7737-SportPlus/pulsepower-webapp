@@ -1,0 +1,23 @@
+:root {
+  --navy: #101b35;
+  --turquoise: #2dd4bf;
+  --lavender: #ede9fe;
+  --background: #f8fafc;
+  --success: #4bb758;
+  --destructive: #e8483f;
+  --warning: #f2c749;
+  --surface: #ffffff;
+  --muted: #64748b;
+  --border: #e5eaf1;
+  --mint: #e5faf4;
+  --radius: 16px;
+  --radius-sm: 10px;
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
+  --space-8: 32px;
+  --font: 'Rubik', 'Segoe UI', sans-serif;
+}

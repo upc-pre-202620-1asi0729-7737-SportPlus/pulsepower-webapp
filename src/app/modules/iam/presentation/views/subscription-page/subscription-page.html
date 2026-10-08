@@ -1,0 +1,78 @@
+<pp-page-heading
+  [title]="'Your subscription' | t"
+  [description]="'Your plan and membership, in one place.' | t"
+  [eyebrow]="'PULSEPOWER MEMBERSHIP' | t"
+/>
+<section class="panel">
+  @if (!service.overview().available) {
+    <pp-empty-state
+      icon="spark"
+      [title]="'Plan information is not available yet' | t"
+      [description]="
+        'Online subscriptions and payments are not connected in this local version. You can continue using your local workspace.'
+          | t
+      "
+    />
+  }
+  @for (plan of service.overview().plans; track plan.id) {
+    <article>
+      <h2>{{ plan.name | t }}</h2>
+      <ul>
+        @for (feature of plan.features; track feature) {
+          <li>{{ feature | t }}</li>
+        }
+      </ul>
+    </article>
+  }
+  <a mat-button class="btn secondary" routerLink="/settings">{{ 'Back to settings' | t }}</a>
+</section>
+<section class="panel mt">
+  <p class="notice">
+    {{
+      'Subscription simulation: no payment is charged. Demo period: 30 days. Prices and entitlements are pending confirmation.'
+        | t
+    }}
+  </p>
+  @if (service.error(); as error) {
+    <p role="alert">{{ error | t }}</p>
+  }
+  @if (service.overview().subscription; as subscription) {
+    <p>Pro · {{ subscription.status | t }}</p>
+    <p>{{ 'End of period' | t }}: {{ subscription.endsAt?.slice(0, 10) }}</p>
+    @if (subscription.cancelAtPeriodEnd) {
+      <p role="status">
+        {{ 'Cancellation saved. Access remains until the end of the paid period.' | t }}
+      </p>
+    } @else if (subscription.status === 'Active') {
+      @if (confirming()) {
+        <p>{{ 'Confirm cancellation at the end of the period?' | t }}</p>
+        <button
+          mat-button
+          class="btn danger"
+          [disabled]="service.busy()"
+          (click)="service.cancel(); confirming.set(false)"
+        >
+          {{ 'Confirm cancellation' | t }}</button
+        ><button mat-button class="btn secondary" (click)="confirming.set(false)">
+          {{ 'Keep subscription' | t }}
+        </button>
+      } @else {
+        <button mat-button class="btn secondary" (click)="confirming.set(true)">
+          {{ 'Cancel Pro' | t }}
+        </button>
+      }
+    }
+  }
+  @if (
+    !service.overview().subscription || service.overview().subscription?.status === 'Cancelled'
+  ) {
+    <button
+      mat-flat-button
+      class="btn primary"
+      [disabled]="service.busy()"
+      (click)="service.activateDemo()"
+    >
+      {{ 'Simulate Pro subscription' | t }}
+    </button>
+  }
+</section>

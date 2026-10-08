@@ -1,0 +1,40 @@
+<section class="panel mt">
+  <h2>{{ 'Stress and sleep — Weekly overview' | t }}</h2>
+  <p>
+    {{
+      'Side-by-side records, not a medical correlation. Sleep is paired with the date the sleep period started.'
+        | t
+    }}
+  </p>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>{{ 'Date' | t }}</th>
+          <th>{{ 'Stress' | t }}</th>
+          <th>{{ 'Sleep duration' | t }}</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (row of summary.rows(); track row.date) {
+          <tr>
+            <td>{{ row.date | localDate: 'MMM d' }}</td>
+            <td>
+              {{ row.stress ?? 'No data' | t }}
+              @if (row.stress !== null) {
+                /10
+              }
+            </td>
+            <td>
+              {{ row.hours ?? 'No data' | t }}
+              @if (row.hours !== null) {
+                {{ 'hours' | t }}
+              }
+            </td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+  <small>{{ 'No data means no record is available for that date.' | t }}</small>
+</section>

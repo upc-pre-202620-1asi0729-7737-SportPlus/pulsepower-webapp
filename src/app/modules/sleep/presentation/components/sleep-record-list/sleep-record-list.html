@@ -1,0 +1,40 @@
+<section class="panel mt">
+  <div class="panel-heading">
+    <h2>{{ 'Sleep history' | t }}</h2>
+    <span class="badge">{{ records().length | t }} {{ 'records' | t }}</span>
+  </div>
+  @if (records().length) {
+    <div class="table-wrap">
+      <table>
+        <thead>
+        <tr>
+          <th>{{ 'Bedtime' | t }}</th>
+          <th>{{ 'Wake up' | t }}</th>
+          <th>{{ 'Duration' | t }}</th>
+          <th>{{ 'Source' | t }}</th>
+          <th>{{ 'Notes' | t }}</th>
+        </tr>
+        </thead>
+        <tbody>
+          @for (record of records(); track record.id) {
+            <tr>
+              <td>{{ record.startedAt | localDate: 'MMM d, HH:mm' | t }}</td>
+              <td>{{ record.endedAt | localDate: 'MMM d, HH:mm' | t }}</td>
+              <td>{{ record.duration | t }}</td>
+              <td>
+                <span class="badge purple">{{ record.source | t }}</span>
+              </td>
+              <td>{{ record.notes || '—' | t }}</td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  } @else {
+    <pp-empty-state
+      icon="sleep"
+      [title]="'Every restful night counts' | t"
+      [description]="'Log your first night to start exploring your sleep patterns.' | t"
+    />
+  }
+</section>
