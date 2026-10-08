@@ -1,0 +1,107 @@
+<pp-page-heading
+  [title]="'Reports' | t"
+  [description]="'Look back, connect the dots, and see your progress.' | t"
+  [eyebrow]="'YOUR PROGRESS OVER TIME' | t"
+/>
+<pp-feedback [error]="store.error()" [message]="store.message()" />
+<div class="content-split">
+  <section class="panel">
+    <h2>{{ 'Weekly trends' | t }}</h2>
+    <pp-line-chart
+      [series]="trends.series()"
+      [normalized]="true"
+      [description]="'chart.reportDescription'"
+    />
+    @if (trends.demo) {
+      <p class="notice">{{ 'chart.hrvDemo' | t }}</p>
+    }
+
+    <div class="panel-heading">
+      <div>
+        <h2>{{ 'Your progress reports' | t }}</h2>
+        <p>{{ 'A history of the reports you have generated' | t }}</p>
+      </div>
+      <pp-icon name="reports" />
+    </div>
+    @for (report of store.reports(); track report.id) {
+      <article class="record-row">
+        <div class="record-icon"><pp-icon name="reports" /></div>
+        <div class="record-main">
+          <strong
+            >{{ report.from | localDate: 'MMM d' | t }} –
+            {{ report.to | localDate: 'MMM d, y' | t }}</strong
+          >
+          <p>{{ report.types.join(' · ') | t }}</p>
+          <small>{{ report.requestedAt | localDate: 'medium' | t }}</small>
+        </div>
+        <button
+          class="icon-button"
+          [attr.aria-label]="'Download report ' + report.from | t"
+          [disabled]="store.busy()"
+          (click)="store.download(report)"
+        >
+          <pp-icon name="download" />
+        </button>
+      </article>
+    } @empty {
+      <pp-empty-state
+        icon="reports"
+        [title]="'See how far you have come' | t"
+        [description]="
+          'Generate your first report after a week of recorded history. Choose a period and the information you want to include.'
+            | t
+        "
+      />
+    }
+    <div class="notice mt">
+      <pp-icon name="reports" />
+      <div>
+        <strong>{{ 'A clear record of your progress' | t }}</strong
+        >{{
+          'Your report contains the records you selected and your optional note. Wearable metrics appear only when those measurements are available.'
+            | t
+        }}
+      </div>
+    </div>
+  </section>
+  <section class="panel">
+    <div class="panel-heading">
+      <h2>{{ 'Export report' | t }}</h2>
+      <pp-icon name="download" />
+    </div>
+    <form #reportForm="ngForm" (ngSubmit)="generate()">
+      <div class="form-grid">
+        <mat-form-field appearance="outline" subscriptSizing="dynamic" class="field"
+          ><mat-label>{{ 'From' | t }}</mat-label
+          ><input matInput name="from" type="date" [(ngModel)]="from" required /></mat-form-field
+        ><mat-form-field appearance="outline" subscriptSizing="dynamic" class="field"
+          ><mat-label>{{ 'To' | t }}</mat-label
+          ><input matInput name="to" type="date" [(ngModel)]="to" required
+        /></mat-form-field>
+        <fieldset class="report-categories full">
+          <legend>{{ 'Select data to include' | t }}</legend>
+          @for (type of store.categories; track type) {
+            <mat-checkbox [name]="type" [(ngModel)]="selected[type]">{{ type | t }}</mat-checkbox>
+          }
+        </fieldset>
+        <mat-form-field appearance="outline" subscriptSizing="dynamic" class="field full"
+          ><mat-label>{{ 'Note for your report' | t }}</mat-label
+          ><textarea
+            matInput
+            name="note"
+            [(ngModel)]="note"
+            maxlength="2000"
+            [placeholder]="'Additional comments…' | t"
+          ></textarea>
+        </mat-form-field>
+      </div>
+      <button
+        mat-flat-button
+        class="btn primary mt"
+        [disabled]="reportForm.invalid || store.busy()"
+      >
+        <pp-icon name="download" />{{ (store.busy() ? 'Preparing report…' : 'Export PDF') | t }}
+      </button>
+    </form>
+  </section>
+</div>
