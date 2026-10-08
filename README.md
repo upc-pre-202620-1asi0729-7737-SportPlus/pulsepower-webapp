@@ -15,16 +15,17 @@ La versión actual funciona solo como frontend: guarda los datos en el navegador
 
 La interfaz está disponible en inglés y español. El idioma inicial es inglés y se conserva tu preferencia al cambiarlo.
 
-## Ejecutar el proyecto
+# PulsePower - cómo ejecutar
 
-Requiere Node.js 22.22.3+ en la rama 22 o 24.15+ en la rama 24.
+1. Node 22.22.3+ (rama 22) o 24.15+ (rama 24). Revisa con: node -v
+2. Abre la terminal DENTRO de esta carpeta (donde está package.json)
+3. npm ci
+4. npm start
+5. Abre http://localhost:4200/
+   Cuenta demo: pulsepower@gmail.com / 123456
 
-```sh
-npm ci
-npm start
-```
+Comprobaciones: npm run build | npm test | npm run check:architecture | npm run format:check
 
-Abre [localhost:4200](http://localhost:4200).
 
 **Cuenta de demostración:** `pulsepower@gmail.com` · **Contraseña:** `123456`.
 
