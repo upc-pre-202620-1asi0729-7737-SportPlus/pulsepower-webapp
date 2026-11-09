@@ -1,5 +1,6 @@
 import { Routes } from '@angular/router';
 import { requireFocus } from './shared/application/focus-guard';
+import { requireSession, withoutSession } from './shared/application/session-guard';
 
 export const routes: Routes = [
   {
@@ -14,6 +15,15 @@ export const routes: Routes = [
     loadComponent: () =>
       import('./shared/presentation/views/terms-page/terms-page').then((m) => m.TermsPage),
   },
+  {
+    path: 'help',
+    canMatch: [withoutSession],
+    title: 'Help | PulsePower',
+    loadComponent: () =>
+      import('./shared/presentation/views/public-help-page/public-help-page').then(
+        (m) => m.PublicHelpPage,
+      ),
+  },
   { path: '', pathMatch: 'full', redirectTo: 'sign-in' },
   {
     path: '',
@@ -22,6 +32,7 @@ export const routes: Routes = [
   },
   {
     path: '',
+    canActivate: [requireSession],
     loadComponent: () =>
       import('./shared/presentation/components/layout/layout').then((m) => m.Layout),
     children: [
@@ -75,6 +86,20 @@ export const routes: Routes = [
         loadChildren: () =>
           import('./modules/physiology/presentation/physiological.routes').then(
             (module) => module.PHYSIOLOGICAL_ROUTES,
+          ),
+      },
+      {
+        path: 'assistant',
+        loadChildren: () =>
+          import('./modules/physiology/presentation/physiological.routes').then(
+            (module) => module.ASSISTANT_ROUTES,
+          ),
+      },
+      {
+        path: 'device',
+        loadChildren: () =>
+          import('./modules/physiology/presentation/physiological.routes').then(
+            (module) => module.DEVICE_SIMULATOR_ROUTES,
           ),
       },
       {

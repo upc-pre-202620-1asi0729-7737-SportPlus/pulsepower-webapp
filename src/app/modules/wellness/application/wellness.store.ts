@@ -72,7 +72,7 @@ export class WellnessStore extends ActionState {
     return this.execute(async () => {
       const next = saveCheckIn(this.data(), { ...command, id: this.clock.id() });
       await this.repository.save(next);
-      this.data.set(next);
+      this.data.set(await this.repository.load());
     }, 'Check-in saved.');
   }
   addHabit(name: string, weeklyTarget: number): Promise<boolean> {
@@ -80,14 +80,14 @@ export class WellnessStore extends ActionState {
       const habit = wellnessHabit({ id: this.clock.id(), name, weeklyTarget });
       const next = { ...this.data(), habits: [...this.data().habits, habit] };
       await this.repository.save(next);
-      this.data.set(next);
+      this.data.set(await this.repository.load());
     }, 'Habit added.');
   }
   toggleHabit(id: string): Promise<boolean> {
     return this.execute(async () => {
       const next = toggleHabit(this.data(), id, this.today);
       await this.repository.save(next);
-      this.data.set(next);
+      this.data.set(await this.repository.load());
     }, 'Habit progress updated.');
   }
   private average(field: 'stress' | 'mood'): string {

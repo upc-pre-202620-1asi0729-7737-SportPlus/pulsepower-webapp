@@ -1,0 +1,125 @@
+<pp-page-heading
+  [title]="'simulator.title' | t"
+  [description]="'simulator.description' | t"
+  [eyebrow]="'simulator.eyebrow' | t"
+/>
+<p class="notice">{{ 'simulator.notice' | t }}</p>
+<pp-feedback [error]="store.error()" [message]="store.message()" />
+<div class="simulator-layout mt">
+  <div class="stack">
+    <section class="panel">
+      <div class="panel-heading">
+        <div>
+          <h2>{{ 'simulator.today.title' | t }}</h2>
+          <p>{{ 'simulator.today.body' | t }}</p>
+        </div>
+        <pp-icon name="device" />
+      </div>
+      <div class="scenario-grid">
+        @for (scenario of scenarios; track scenario) {
+          <button
+            type="button"
+            class="scenario"
+            [class.scenario-alert]="scenario === 'overloadDay'"
+            [disabled]="store.busy()"
+            (click)="store.simulate(scenario)"
+          >
+            <strong>{{ 'simulator.' + scenario + '.title' | t }}</strong>
+            <span>{{ 'simulator.' + scenario + '.body' | t }}</span>
+          </button>
+        }
+      </div>
+    </section>
+    <section class="panel">
+      <div class="panel-heading">
+        <div>
+          <h2>{{ 'simulator.week.title' | t }}</h2>
+          <p>{{ 'simulator.week.body' | t }}</p>
+        </div>
+        <button
+          mat-flat-button
+          type="button"
+          class="btn primary"
+          [disabled]="store.busy()"
+          (click)="store.simulateWeek()"
+        >
+          {{ 'simulator.week.action' | t }}
+        </button>
+      </div>
+    </section>
+    <section class="panel">
+      <div class="panel-heading">
+        <div>
+          <h2>{{ 'simulator.battery.title' | t }}</h2>
+          <p>{{ 'simulator.battery.body' | t }}</p>
+        </div>
+      </div>
+      <div class="simulator-actions">
+        <button
+          mat-flat-button
+          type="button"
+          class="btn secondary"
+          [disabled]="store.busy()"
+          (click)="store.setBattery(10)"
+        >
+          {{ 'simulator.battery.low' | t }}
+        </button>
+        <button
+          mat-button
+          type="button"
+          class="btn text"
+          [disabled]="store.busy()"
+          (click)="store.setBattery(80)"
+        >
+          {{ 'simulator.battery.restore' | t }}
+        </button>
+      </div>
+    </section>
+  </div>
+  <div class="stack">
+    <section class="panel" aria-live="polite">
+      <h2>{{ 'simulator.level.title' | t }}</h2>
+      @if (store.recoveryLevel(); as level) {
+        <p class="simulator-level">{{ level }}<small>%</small></p>
+        <p>{{ guidance(level) | t }}</p>
+      } @else if (store.recoveryLevel() === 0) {
+        <p class="simulator-level">0<small>%</small></p>
+        <p>{{ 'simulator.guidance.rest' | t }}</p>
+      } @else {
+        <p>{{ 'simulator.level.empty' | t }}</p>
+      }
+      <a mat-flat-button class="btn primary mt" routerLink="/assistant"
+        >{{ 'simulator.level.ask' | t }} <pp-icon name="arrow"
+      /></a>
+    </section>
+    <section class="panel" aria-live="polite">
+      <h2>{{ 'simulator.alerts.title' | t }}</h2>
+      @for (alert of activeAlerts(); track alert.id) {
+        <div class="notice mt">
+          <div>
+            <strong>{{ alert.title | t }}</strong>
+            <p>{{ alert.message | t }}</p>
+            <small>{{ alert.issuedAt | localDate: 'medium' | t }}</small>
+          </div>
+        </div>
+      } @empty {
+        <p>{{ 'simulator.alerts.empty' | t }}</p>
+      }
+    </section>
+    <section class="panel">
+      <h2>{{ 'simulator.history.title' | t }}</h2>
+      @for (entry of store.history(); track entry.id) {
+        <article class="record-row">
+          <div class="record-main">
+            <strong
+              >{{ 'simulator.' + entry.day.scenario + '.title' | t }} · {{ entry.day.date }}</strong
+            >
+            <p>{{ readings(entry.day) }}</p>
+          </div>
+        </article>
+      } @empty {
+        <p>{{ 'simulator.history.empty' | t }}</p>
+      }
+    </section>
+  </div>
+</div>

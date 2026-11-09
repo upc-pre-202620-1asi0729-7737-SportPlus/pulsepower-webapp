@@ -5,7 +5,7 @@ import { dayLabel, lastDays, localDate } from '../../../shared/application/calen
 import { SleepRepository } from './ports/sleep-repository';
 import { SleepRecord, durationHours } from '../domain/model/sleep-record.entity';
 import { SleepRoutine, sleepRoutine } from '../domain/model/sleep-routine';
-import { addSleepRecord, emptySleep } from '../domain/model/sleep-data';
+import { addSleepRecord, emptySleep, replaceNight } from '../domain/model/sleep-data';
 export type SleepHistoryRow = SleepRecord & { readonly duration: string };
 export interface SleepCommand {
   startedAt: string;
@@ -83,14 +83,29 @@ export class SleepStore extends ActionState {
         notes: command.notes,
       });
       await this.repository.save(next);
-      this.data.set(next);
+      this.data.set(await this.repository.load());
+    }, 'Sleep record saved.');
+  }
+  /** Saves a night measured by the wearable, replacing the night that ends that same day. */
+  syncDeviceNight(command: SleepCommand & { sleepScore: number }): Promise<boolean> {
+    return this.execute(async () => {
+      const next = replaceNight(this.data(), {
+        id: this.clock.id(),
+        startedAt: new Date(command.startedAt).toISOString(),
+        endedAt: new Date(command.endedAt).toISOString(),
+        source: 'AIoTI',
+        sleepScore: command.sleepScore,
+        notes: command.notes,
+      });
+      await this.repository.save(next);
+      this.data.set(await this.repository.load());
     }, 'Sleep record saved.');
   }
   saveRoutine(command: RoutineCommand): Promise<boolean> {
     return this.execute(async () => {
       const next = { ...this.data(), routine: sleepRoutine(command) };
       await this.repository.save(next);
-      this.data.set(next);
+      this.data.set(await this.repository.load());
     }, 'Sleep routine saved.');
   }
   recordDuration(start: string, end: string): string {

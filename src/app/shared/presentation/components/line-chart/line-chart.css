@@ -4,9 +4,11 @@
 }
 svg {
   width: 100%;
+  max-width: 960px;
   height: auto;
   display: block;
   min-height: 180px;
+  margin-inline: auto;
 }
 .grid-line {
   stroke: #e2e8f0;

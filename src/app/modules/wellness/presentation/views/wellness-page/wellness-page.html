@@ -2,9 +2,9 @@
   [title]="'Wellness — Summary' | t"
   [description]="'Make space for how you feel.' | t"
   [eyebrow]="'SMALL HABITS, EVERY DAY' | t"
-><button mat-flat-button class="btn primary" (click)="checkInEditor.open()">
-  <pp-icon name="plus" /> {{ 'Log check-in' | t }}
-</button></pp-page-heading
+  ><button mat-flat-button class="btn primary" (click)="checkInEditor.open()">
+    <pp-icon name="plus" /> {{ 'Log check-in' | t }}
+  </button></pp-page-heading
 >
 <pp-feedback [error]="store.error()" [message]="store.message()" />
 <div class="grid-3">
@@ -15,18 +15,18 @@
     [detail]="'Self-reported perceived stress' | t"
     icon="pulse"
   /><pp-metric-card
-  [label]="'AVG. OVERALL STATE' | t"
-  [value]="store.averageMood()"
-  unit="/5"
-  [detail]="'Your daily check-ins' | t"
-  icon="wellness"
-/><pp-metric-card
-  [label]="'CHECK-INS THIS WEEK' | t"
-  [value]="store.weekCheckIns().length"
-  unit="/7 days"
-  [detail]="'Stay in touch with your wellbeing' | t"
-  icon="calendar"
-/>
+    [label]="'AVG. OVERALL STATE' | t"
+    [value]="store.averageMood()"
+    unit="/5"
+    [detail]="'Your daily check-ins' | t"
+    icon="wellness"
+  /><pp-metric-card
+    [label]="'CHECK-INS THIS WEEK' | t"
+    [value]="store.weekCheckIns().length"
+    unit="/7 days"
+    [detail]="'Stay in touch with your wellbeing' | t"
+    icon="calendar"
+  />
 </div>
 <div class="content-split mt">
   <section class="panel">
@@ -91,44 +91,44 @@
 <pp-check-in-list [checkIns]="store.checkIns()" />
 <pp-stress-sleep-summary />
 <pp-form-dialog routeEntry #checkInEditor [title]="'Your daily check-in' | t"
-><pp-feedback [error]="store.error()" /><pp-check-in-form
-  [date]="store.today"
-  [initial]="store.todayCheckIn()"
-  [busy]="store.busy()"
-  (submitted)="saveCheckIn($event, checkInEditor)"
+  ><pp-feedback [error]="store.error()" /><pp-check-in-form
+    [date]="store.today"
+    [initial]="store.todayCheckIn()"
+    [busy]="store.busy()"
+    (submitted)="saveCheckIn($event, checkInEditor)"
 /></pp-form-dialog>
 <pp-form-dialog #habitEditor [title]="'Add a wellbeing habit' | t"
-><pp-feedback [error]="store.error()" />
+  ><pp-feedback [error]="store.error()" />
   <form #habitForm="ngForm" (ngSubmit)="saveHabit(habitEditor)">
     <div class="form-grid">
       <mat-form-field appearance="outline" subscriptSizing="dynamic" class="field full"
-      ><mat-label>{{ 'Habit name' | t }}</mat-label
-      ><input
-        matInput
-        name="habitName"
-        [(ngModel)]="habitName"
-        required
-        maxlength="80"
-        [placeholder]="'e.g. Digital detox before bed' | t" /></mat-form-field
+        ><mat-label>{{ 'Habit name' | t }}</mat-label
+        ><input
+          matInput
+          name="habitName"
+          [(ngModel)]="habitName"
+          required
+          maxlength="80"
+          [placeholder]="'e.g. Digital detox before bed' | t" /></mat-form-field
       ><mat-form-field appearance="outline" subscriptSizing="dynamic" class="field full"
-    ><mat-label>{{ 'Weekly target (days)' | t }}</mat-label
-    ><input
-      matInput
-      name="habitTarget"
-      type="number"
-      [(ngModel)]="habitTarget"
-      min="1"
-      max="7"
-      step="1"
-      required
-    /></mat-form-field>
+        ><mat-label>{{ 'Weekly target (days)' | t }}</mat-label
+        ><input
+          matInput
+          name="habitTarget"
+          type="number"
+          [(ngModel)]="habitTarget"
+          min="1"
+          max="7"
+          step="1"
+          required
+      /></mat-form-field>
     </div>
     <div class="form-actions">
       <button mat-button type="button" class="btn secondary" (click)="habitEditor.close()">
         {{ 'Cancel' | t }}</button
       ><button mat-flat-button class="btn primary" [disabled]="habitForm.invalid || store.busy()">
-      {{ 'Save habit' | t }}
-    </button>
+        {{ 'Save habit' | t }}
+      </button>
     </div>
   </form></pp-form-dialog
 >

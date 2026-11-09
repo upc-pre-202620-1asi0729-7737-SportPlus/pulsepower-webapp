@@ -1,0 +1,55 @@
+<pp-page-heading
+  [title]="'Recovery guide' | t"
+  [description]="'Ask about your sleep, strain and recovery.' | t"
+/>
+<pp-feedback [error]="store.error()" />
+<section class="panel" id="assistant">
+  <div class="panel-heading">
+    <h2>{{ 'guide.conversation' | t }}</h2>
+    <span class="badge purple">{{ 'Personal guidance' | t }}</span>
+  </div>
+  @for (message of store.conversation()?.messages ?? []; track message.id) {
+    <div class="assistant-message" [class.user-message]="message.role === 'user'">
+      <strong>{{ (message.role === 'user' ? 'You' : 'PulsePower') | t }}</strong>
+      <p>{{ message.content | t }}</p>
+    </div>
+  } @empty {
+    <pp-empty-state
+      icon="spark"
+      [title]="'Understand the story behind your numbers' | t"
+      [description]="
+        'The assistant needs a connected analysis service and authorized physiological history.' | t
+      "
+    />
+  }
+  <div class="guide-suggestions" [attr.aria-label]="'guide.suggestions' | t">
+    @for (suggestion of suggestions; track suggestion) {
+      <button
+        type="button"
+        class="guide-chip"
+        [disabled]="!store.available() || store.busy()"
+        (click)="askSuggestion(suggestion)"
+      >
+        {{ suggestion | t }}
+      </button>
+    }
+  </div>
+  <form class="assistant-input" (ngSubmit)="ask()">
+    <label class="sr-only" for="assistant-question">{{ 'Your question' | t }}</label
+    ><input
+      id="assistant-question"
+      name="question"
+      [ngModel]="question()"
+      (ngModelChange)="question.set($event)"
+      [placeholder]="'Ask about your recovery…' | t"
+      maxlength="2000"
+      [disabled]="!store.available()"
+    /><button
+      mat-flat-button
+      class="btn primary"
+      [disabled]="!store.available() || store.busy() || !question().trim()"
+    >
+      {{ 'Send' | t }} <pp-icon name="arrow" />
+    </button>
+  </form>
+</section>

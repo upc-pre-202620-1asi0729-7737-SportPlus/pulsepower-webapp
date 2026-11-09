@@ -61,23 +61,23 @@ export class SleepInsights {
             value: this.demo
               ? records.length
                 ? Math.min(
-                  100,
-                  Math.round(
-                    (records.reduce(
+                    100,
+                    Math.round(
+                      (records.reduce(
                         (sum, r) =>
                           sum + (Date.parse(r.endedAt) - Date.parse(r.startedAt)) / 3600000,
                         0,
                       ) /
-                      (this.store.routine()?.targetHours ?? 8)) *
-                    100,
-                  ),
-                )
+                        (this.store.routine()?.targetHours ?? 8)) *
+                        100,
+                    ),
+                  )
                 : null
               : records.filter((r) => r.sleepScore !== null).length
                 ? Math.round(
-                  records.reduce((sum, r) => sum + (r.sleepScore ?? 0), 0) /
-                  records.filter((r) => r.sleepScore !== null).length,
-                )
+                    records.reduce((sum, r) => sum + (r.sleepScore ?? 0), 0) /
+                      records.filter((r) => r.sleepScore !== null).length,
+                  )
                 : null,
           };
         }),

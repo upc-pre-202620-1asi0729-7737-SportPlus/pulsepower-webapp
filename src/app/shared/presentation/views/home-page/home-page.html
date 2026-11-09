@@ -77,17 +77,40 @@
     <span class="eyebrow">{{ 'DAILY GUIDANCE' | t }}</span
     ><pp-icon name="spark" />
     <h2>{{ 'Your next insight starts' | t }}<br />{{ 'with your data.' | t }}</h2>
-    <p>
-      {{
-        'Personalized guidance will appear when your wearable and analysis service are connected.'
-          | t
-      }}
-    </p>
+    @if (store.physiology.assessment() && store.physiology.recommendations()[0]; as guidance) {
+      <p>{{ guidance.title | t }}</p>
+    } @else {
+      <p>
+        {{
+          'Personalized guidance will appear when your wearable and analysis service are connected.'
+            | t
+        }}
+      </p>
+    }
     <a mat-button class="btn recommendation-action" routerLink="/planning"
       >{{ "View today's plan" | t }} <pp-icon name="arrow" /></a
-    ><a class="recovery-link" routerLink="/recovery">{{ 'Explore recovery & insights' | t }}</a>
+    ><a class="recovery-link" routerLink="/assistant">{{ 'simulator.level.ask' | t }}</a>
   </section>
 </div>
+@if (activeAlerts().length) {
+  <section class="panel mt" aria-labelledby="home-alerts">
+    <div class="panel-heading">
+      <h2 id="home-alerts">{{ 'Guidance alerts' | t }}</h2>
+      <a mat-button class="btn text small" routerLink="/device"
+        >{{ 'simulator.title' | t }} <pp-icon name="arrow"
+      /></a>
+    </div>
+    @for (alert of activeAlerts(); track alert.id) {
+      <div class="notice mt">
+        <div>
+          <strong>{{ alert.title | t }}</strong>
+          <p>{{ alert.message | t }}</p>
+          <small>{{ alert.issuedAt | localDate: 'medium' | t }}</small>
+        </div>
+      </div>
+    }
+  </section>
+}
 <div class="notice mt">
   <pp-icon name="device" />
   <div>
