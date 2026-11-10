@@ -83,7 +83,7 @@ export class SleepStore extends ActionState {
         notes: command.notes,
       });
       await this.repository.save(next);
-      this.data.set(await this.repository.load());
+      this.data.set(next);
     }, 'Sleep record saved.');
   }
   /** Saves a night measured by the wearable, replacing the night that ends that same day. */
@@ -98,14 +98,14 @@ export class SleepStore extends ActionState {
         notes: command.notes,
       });
       await this.repository.save(next);
-      this.data.set(await this.repository.load());
+      this.data.set(next);
     }, 'Sleep record saved.');
   }
   saveRoutine(command: RoutineCommand): Promise<boolean> {
     return this.execute(async () => {
       const next = { ...this.data(), routine: sleepRoutine(command) };
       await this.repository.save(next);
-      this.data.set(await this.repository.load());
+      this.data.set(next);
     }, 'Sleep routine saved.');
   }
   recordDuration(start: string, end: string): string {

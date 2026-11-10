@@ -259,7 +259,7 @@
 }
 
 <section class="panel mt">
-  <h2>{{ 'Delete server account' | t }}</h2>
+  <h2>{{ 'Delete local account' | t }}</h2>
   <p>
     {{
       'Only the selected workspace is deleted. Its subscription and records are removed. Other accounts are kept. No online account exists.'
@@ -268,7 +268,7 @@
   </p>
   @if (deleting()) {
     <mat-checkbox [ngModel]="deleteConfirmed()" (ngModelChange)="deleteConfirmed.set($event)">
-      {{ 'I confirm permanent deletion of my account and its server data.' | t }}</mat-checkbox
+      {{ 'I confirm permanent deletion of this local workspace.' | t }}</mat-checkbox
     >
     <div class="form-actions">
       <button
@@ -288,7 +288,7 @@
     </div>
   } @else {
     <button mat-button class="btn danger" (click)="deleting.set(true)">
-      {{ 'Delete server account' | t }}
+      {{ 'Delete local account' | t }}
     </button>
   }
   @if (identity.signInError(); as error) {

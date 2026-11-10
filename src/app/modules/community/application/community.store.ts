@@ -74,7 +74,7 @@ export class CommunityStore extends ActionState {
       });
       await this.repository.save(progress);
       this.progressState.set(await this.repository.list());
-    }, 'Progress saved privately to your account.');
+    }, 'Progress saved privately on this device.');
   }
   remove(id: string): Promise<boolean> {
     return this.execute(async () => {

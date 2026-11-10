@@ -4,14 +4,19 @@ PulsePower es una plataforma de SportPlus que ayuda a organizar el entrenamiento
 
 ## ¿Qué puedes hacer?
 
-- Crear una cuenta en el backend y personalizar tu perfil y objetivos.
+- Crear una cuenta local y personalizar tu perfil y objetivos.
 - Registrar entrenamientos y planificar actividades en un calendario.
 - Registrar tus noches de sueño y configurar una rutina de descanso.
 - Completar registros de bienestar, hábitos y ejercicios de respiración.
-- Consultar información de recuperación simulada y generar reportes PDF.
-- Explorar las funciones de comunidad y suscripción en modo demostración.
+- Generar lecturas de una pulsera en **Dispositivo simulado** (noches, entrenamientos, estrés, batería o una semana completa).
+- Consultar tu nivel de recuperación, las alertas y las recomendaciones calculadas con tus registros.
+- Preguntar a la **Guía de recuperación** sobre tu sueño, entrenamiento, estrés y recuperación. Responde con tus datos y rechaza temas ajenos a la plataforma.
+- Generar reportes PDF y explorar las funciones de comunidad y suscripción en modo demostración.
+- Consultar el centro de ayuda sin iniciar sesión; el resto de la plataforma requiere una sesión.
 
-La versión actual consume la API del backend con autenticación JWT. Los registros del simulador se guardan mediante los endpoints de sueño, entrenamiento y bienestar. El asistente responde desde el backend con reglas y datos de la cuenta autenticada; no utiliza IA generativa externa. Las preferencias, respiración y batería simulada siguen siendo locales. No realiza diagnósticos médicos ni cobros.
+Esta versión funciona en modo local. La cuenta, los registros del simulador y los reportes se guardan en el navegador. La guía de recuperación responde con reglas sobre esos registros. Las cuentas de demostración y sus datos pertenecen al navegador donde se crearon.
+
+La Landing Page puede enlazar con `?lang=es|en` para conservar el idioma y con `?segment=athlete|wellness` para preseleccionar el enfoque al crear la cuenta.
 
 La interfaz está disponible en inglés y español. El idioma inicial es inglés y se conserva tu preferencia al cambiarlo.
 
@@ -22,16 +27,15 @@ La interfaz está disponible en inglés y español. El idioma inicial es inglés
 3. npm ci
 4. npm start
 5. Abre http://localhost:4200/
-   Registra una cuenta en el backend antes de iniciar sesión.
+   Cuenta demo: pulsepower@gmail.com / 123456
 
 Comprobaciones: npm run build | npm test | npm run check:architecture | npm run format:check
 
-
-**Backend requerido:** configura y levanta la API completa; las cuentas locales de versiones anteriores no se migran automáticamente.
+**Cuenta de demostración:** `pulsepower@gmail.com` · **Contraseña:** `123456`.
 
 ## Tecnologías y organización
 
-Angular con componentes standalone, TypeScript y Angular Material. El tema de Material se define en `src/material-theme.scss`, con los colores de PulsePower y la fuente Rubik.
+Angular con componentes standalone, TypeScript y Angular Material. El tema de Material se define en `src/material-theme.scss`, con los colores de PulsePower y la fuente Rubik, incluida en `src/app/assets/fonts` (licencia SIL Open Font License, ver `OFL.txt`).
 
 Los siete contextos están en `src/app/modules`: `iam`, `training`, `sleep`, `wellness`, `physiology`, `reports` y `community`. Cada uno tiene las capas `domain`, `application`, `infrastructure` y `presentation`. Los elementos compartidos están en `src/app/shared`.
 
@@ -46,13 +50,3 @@ Los siete contextos están en `src/app/modules`: `iam`, `training`, `sleep`, `we
 | `npm run check:architecture` | Verificar las reglas de arquitectura.           |
 | `npm run format`             | Formatear el código.                            |
 | `npm run format:check`       | Comprobar el formato.                           |
-
-## Integración con la API
-
-- Desarrollo: `http://localhost:8080/api/v1`; frontend en `http://localhost:4200`.
-- Producción: se conserva la URL de Render en `src/environments/environment.ts`.
-- Configura CORS en el backend para el origen donde publiques el frontend.
-- Se requiere el backend completo con IAM, bienestar, fisiología y `POST /api/v1/assistant/messages`, además de los endpoints de entrenamiento, sueño, reportes y comunidad.
-- El reemplazo de sueño usa `PUT /api/v1/sleep/records/{id}` y la reprogramación `PUT /api/v1/training/plan/activities/{id}`.
-- Las pruebas unitarias usan respuestas simuladas; no certifican el despliegue actual en Render.
-- Antes de desplegar esta rama, integrar y verificar los módulos pendientes del backend.
