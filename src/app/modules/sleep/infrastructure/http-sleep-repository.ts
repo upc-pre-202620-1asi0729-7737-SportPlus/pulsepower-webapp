@@ -1,0 +1,6 @@
+import {Injectable,inject} from '@angular/core';
+import {Api,ids,reconcile} from '../../../shared/infrastructure/api';
+import {SleepRepository} from '../application/ports/sleep-repository';
+import {SleepData} from '../domain/model/sleep-data';
+@Injectable() export class HttpSleepRepository extends SleepRepository {private api=inject(Api);async load():Promise<SleepData>{const [records,routine]=await Promise.all([this.api.get('/sleep/records'),this.api.get('/sleep/routine')]);return ids({records,routine});}
+ async save(data:SleepData){const old=await this.load();const removed=old.records.filter(x=>!data.records.some(y=>y.id===x.id));const added=data.records.filter(x=>!old.records.some(y=>y.id===x.id));const replaced=new Set<string>();const created=new Set<string>();for(const row of added){const prior=removed.find(x=>!replaced.has(x.id)&&x.endedAt.slice(0,10)===row.endedAt.slice(0,10));if(prior){await this.api.put('/sleep/records/'+prior.id,row);replaced.add(prior.id);created.add(row.id);}}await reconcile(this.api,'/sleep/records',old.records.filter(x=>!replaced.has(x.id)),data.records.filter(x=>!created.has(x.id)));if(data.routine && JSON.stringify(old.routine)!==JSON.stringify(data.routine))await this.api.put('/sleep/routine',data.routine);}}

@@ -1,3 +1,4 @@
+import { Api } from '../infrastructure/api';
 import { Injectable, inject } from '@angular/core';
 import { WearableFeed } from '../../modules/physiology/application/ports/wearable-feed';
 import { SimulatedDay } from '../../modules/physiology/domain/model/wearable-simulation';
@@ -10,6 +11,7 @@ const NOTE = 'Simulated wearable reading';
 /** Sends simulated wearable readings to the Sleep, Training and Wellness records. */
 @Injectable()
 export class WorkspaceWearableFeed extends WearableFeed {
+  private readonly api = inject(Api);
   private readonly sleep = inject(SleepStore);
   private readonly training = inject(TrainingStore);
   private readonly wellness = inject(WellnessStore);
@@ -39,5 +41,8 @@ export class WorkspaceWearableFeed extends WearableFeed {
       }))
     )
       throw new Error(this.wellness.error() ?? 'simulator.failed');
+    const overview=await this.api.get('/physiology/overview');
+    if(!overview.connection || overview.connection.status!=='connected')await this.api.post('/physiology/connection',{provider:'AIoTI simulated'});
+    await this.api.post('/physiology/sync');
   }
 }

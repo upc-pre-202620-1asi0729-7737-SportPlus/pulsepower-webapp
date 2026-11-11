@@ -4,17 +4,17 @@ PulsePower es una plataforma de SportPlus que ayuda a organizar el entrenamiento
 
 ## ¿Qué puedes hacer?
 
-- Crear una cuenta local y personalizar tu perfil y objetivos.
+- Crear una cuenta en el backend y personalizar tu perfil y objetivos.
 - Registrar entrenamientos y planificar actividades en un calendario.
 - Registrar tus noches de sueño y configurar una rutina de descanso.
 - Completar registros de bienestar, hábitos y ejercicios de respiración.
 - Generar lecturas de una pulsera en **Dispositivo simulado** (noches, entrenamientos, estrés, batería o una semana completa).
 - Consultar tu nivel de recuperación, las alertas y las recomendaciones calculadas con tus registros.
-- Preguntar a la **Guía de recuperación** sobre tu sueño, entrenamiento, estrés y recuperación. Responde con tus datos y rechaza temas ajenos a la plataforma.
+- Preguntar al **asistente** sobre tu sueño, entrenamiento, estrés y recuperación. El backend responde con los datos de tu cuenta y rechaza temas ajenos a la plataforma.
 - Generar reportes PDF y explorar las funciones de comunidad y suscripción en modo demostración.
 - Consultar el centro de ayuda sin iniciar sesión; el resto de la plataforma requiere una sesión.
 
-Esta versión funciona en modo local. La cuenta, los registros del simulador y los reportes se guardan en el navegador. La guía de recuperación responde con reglas sobre esos registros. Las cuentas de demostración y sus datos pertenecen al navegador donde se crearon.
+Esta versión consume la API del backend con autenticación JWT. Los registros del simulador se guardan mediante los endpoints de sueño, entrenamiento y bienestar. Las preferencias, la respiración y la batería simulada siguen siendo locales. No realiza diagnósticos médicos ni cobros.
 
 La Landing Page puede enlazar con `?lang=es|en` para conservar el idioma y con `?segment=athlete|wellness` para preseleccionar el enfoque al crear la cuenta.
 
@@ -27,11 +27,11 @@ La interfaz está disponible en inglés y español. El idioma inicial es inglés
 3. npm ci
 4. npm start
 5. Abre http://localhost:4200/
-   Cuenta demo: pulsepower@gmail.com / 123456
+   Registra una cuenta en el backend antes de iniciar sesión.
 
 Comprobaciones: npm run build | npm test | npm run check:architecture | npm run format:check
 
-**Cuenta de demostración:** `pulsepower@gmail.com` · **Contraseña:** `123456`.
+**Backend requerido:** levanta la API (`pulsepower-backend`) en `http://localhost:8080`.
 
 ## Tecnologías y organización
 
@@ -50,3 +50,10 @@ Los siete contextos están en `src/app/modules`: `iam`, `training`, `sleep`, `we
 | `npm run check:architecture` | Verificar las reglas de arquitectura.           |
 | `npm run format`             | Formatear el código.                            |
 | `npm run format:check`       | Comprobar el formato.                           |
+
+## Integración con la API
+
+- Desarrollo: `http://localhost:8080/api/v1`; frontend en `http://localhost:4200`.
+- Producción: URL de Render en `src/environments/environment.ts`.
+- Configura CORS en el backend para el origen donde publiques el frontend.
+- Las pruebas unitarias usan respuestas simuladas; no certifican el despliegue en Render.
