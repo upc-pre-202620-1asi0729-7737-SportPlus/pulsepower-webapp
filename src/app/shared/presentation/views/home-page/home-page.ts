@@ -1,5 +1,5 @@
 import { MatButtonModule } from '@angular/material/button';
-import { Translate } from '../../../application/i18n';
+import { LocalizedDate, Translate } from '../../../application/i18n';
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { HomeStore } from '../../../application/home.store';
@@ -13,6 +13,7 @@ import { CheckInForm } from '../../../../modules/wellness/presentation/component
   imports: [
     MatButtonModule,
     Translate,
+    LocalizedDate,
     RouterLink,
     MetricCard,
     TrendChart,
@@ -28,5 +29,11 @@ export class HomePage {
   readonly store = inject(HomeStore);
   constructor() {
     void this.store.load();
+  }
+  activeAlerts() {
+    return this.store.physiology
+      .alerts()
+      .filter((alert) => alert.reviewedAt === null)
+      .slice(0, 3);
   }
 }

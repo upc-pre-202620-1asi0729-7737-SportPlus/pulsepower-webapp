@@ -37,7 +37,7 @@ export class IdentityService {
         account.id === 'pulsepower-demo' ? 'demo' : 'personal',
       );
       this.preferences.write('pulsepower.account', account.id);
-      this.state.set({ onlineAccountsAvailable: false, currentAccount: account });
+      this.state.set({ onlineAccountsAvailable: true, currentAccount: account });
       return true;
     } catch {
       this.signInError.set('auth.demoSignInFailed');
@@ -116,11 +116,11 @@ export class IdentityService {
   }
   signOut(): void {
     this.gateway.signOut();
-    this.state.set({ onlineAccountsAvailable: false, currentAccount: null });
+    this.state.set({ onlineAccountsAvailable: true, currentAccount: null });
   }
   private readonly gateway = inject(IdentityGateway);
   private readonly state = signal<IdentityAvailability>({
-    onlineAccountsAvailable: false,
+    onlineAccountsAvailable: true,
     currentAccount: null,
   });
   readonly availability = this.state.asReadonly();

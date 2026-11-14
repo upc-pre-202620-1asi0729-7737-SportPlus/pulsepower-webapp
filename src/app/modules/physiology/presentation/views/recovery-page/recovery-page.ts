@@ -8,6 +8,7 @@ import { Translate, LocalizedDate } from '../../../../../shared/application/i18n
 import { WorkspaceMode } from '../../../../../shared/application/workspace-mode';
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { RouterLink } from '@angular/router';
 import { PhysiologicalStore } from '../../../application/physiological.store';
 import { PageHeading } from '../../../../../shared/presentation/components/page-heading/page-heading';
 import { MetricCard } from '../../../../../shared/presentation/components/metric-card/metric-card';
@@ -25,6 +26,7 @@ import { Icon } from '../../../../../shared/presentation/components/icon/icon';
     LineChart,
     LocalizedDate,
     FormsModule,
+    RouterLink,
     PageHeading,
     MetricCard,
     EmptyState,
@@ -38,13 +40,9 @@ export class RecoveryPage {
   readonly simulation = inject(RecoverySimulationStore);
   readonly workspace = inject(WorkspaceMode);
   readonly store = inject(PhysiologicalStore);
-  question = '';
   battery = 80;
   outcome: 'success' | 'denied' | 'error' | 'disconnected' = 'success';
   constructor() {
     void this.store.load();
-  }
-  async ask(): Promise<void> {
-    if (await this.store.ask(this.question)) this.question = '';
   }
 }

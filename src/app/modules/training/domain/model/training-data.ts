@@ -24,6 +24,24 @@ export function recordSession(data: TrainingData, session: TrainingSession): Tra
   };
 }
 
+/**
+ * Records a session measured by the wearable. It replaces the other unplanned sessions of
+ * that day, as a device synchronization does; sessions that completed a planned activity stay.
+ */
+export function replaceDaySession(data: TrainingData, session: TrainingSession): TrainingData {
+  if (session.plannedActivityId)
+    throw new DomainError('A wearable session cannot complete a planned activity.');
+  return recordSession(
+    {
+      ...data,
+      sessions: data.sessions.filter(
+        (row) => row.date !== session.date || row.plannedActivityId !== null,
+      ),
+    },
+    session,
+  );
+}
+
 export function emptyTraining(): TrainingData {
   return {
     sessions: [],

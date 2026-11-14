@@ -4,7 +4,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatButtonModule } from '@angular/material/button';
 import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { Router, RouterLink } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { Translate } from '../../../../../shared/application/i18n';
 import { IdentityService } from '../../../application/identity.service';
 import { AuthLayout } from '../../components/auth-layout/auth-layout';
@@ -27,6 +27,8 @@ import { AuthLayout } from '../../components/auth-layout/auth-layout';
 })
 export class SignUpPage {
   private readonly router = inject(Router);
+  // The landing page links each segment (?segment=athlete|wellness) to its own sign-up.
+  private readonly segment = inject(ActivatedRoute).snapshot.queryParamMap.get('segment');
   readonly identity = inject(IdentityService);
   readonly showPassword = signal(false);
   readonly showConfirmation = signal(false);
@@ -42,6 +44,13 @@ export class SignUpPage {
     if (await this.identity.register(this.fullName, this.email, this.password, this.confirmation)) {
       this.password = '';
       this.confirmation = '';
+      const focus =
+        this.segment === 'athlete'
+          ? 'Athlete'
+          : this.segment === 'wellness'
+            ? 'Wellness Seeker'
+            : null;
+      if (focus) this.identity.saveFocus(focus, this.identity.draft()?.goal ?? '');
     }
   }
   async finish(): Promise<void> {

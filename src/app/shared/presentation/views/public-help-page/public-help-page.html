@@ -1,0 +1,70 @@
+<main class="legal-page">
+  <article class="panel">
+    <div class="public-help-top">
+      <select
+        class="public-help-language"
+        [attr.aria-label]="'Language' | t"
+        [value]="i18n.locale()"
+        (change)="i18n.setLocale($any($event.target).value)"
+      >
+        <option value="es">Español</option>
+        <option value="en">English</option>
+      </select>
+    </div>
+    <h1>{{ 'Help center' | t }}</h1>
+    <p>{{ 'help.public.intro' | t }}</p>
+    @for (topic of topics; track topic) {
+      <section>
+        <h2>{{ 'help.public.' + topic + '.title' | t }}</h2>
+        <p>{{ 'help.public.' + topic + '.body' | t }}</p>
+      </section>
+    }
+    <section id="contact">
+      <h2>{{ 'help.public.form.title' | t }}</h2>
+      <p>{{ 'help.public.form.note' | t }}</p>
+      <pp-feedback [error]="contact.error()" [message]="contact.message()" />
+      <form (ngSubmit)="send()">
+        <mat-form-field appearance="outline" subscriptSizing="dynamic" class="field">
+          <mat-label>{{ 'help.public.form.email' | t }}</mat-label>
+          <input
+            matInput
+            type="email"
+            name="email"
+            autocomplete="email"
+            required
+            maxlength="254"
+            [ngModel]="email()"
+            (ngModelChange)="email.set($event)"
+          />
+        </mat-form-field>
+        <mat-form-field appearance="outline" subscriptSizing="dynamic" class="field mt">
+          <mat-label>{{ 'help.public.form.message' | t }}</mat-label>
+          <textarea
+            matInput
+            name="message"
+            required
+            maxlength="2000"
+            [ngModel]="message()"
+            (ngModelChange)="message.set($event)"
+          ></textarea>
+        </mat-form-field>
+        <button mat-flat-button class="btn primary mt" [disabled]="contact.busy()">
+          {{ 'help.public.form.send' | t }}
+        </button>
+      </form>
+      @if (contact.reference(); as reference) {
+        <p class="notice mt" role="status">
+          <strong>{{ 'Simulation reference' | t }}: {{ reference }}</strong>
+        </p>
+      }
+    </section>
+    <nav class="public-help-links" [attr.aria-label]="'help.public.links' | t">
+      <a mat-flat-button class="btn primary" routerLink="/sign-up">{{
+        'help.public.createAccount' | t
+      }}</a>
+      <a mat-button class="btn text" routerLink="/sign-in">{{ 'help.public.signIn' | t }}</a>
+      <a mat-button class="btn text" routerLink="/terms">{{ 'legal.terms.title' | t }}</a>
+      <a mat-button class="btn text" routerLink="/privacy">{{ 'legal.privacy.title' | t }}</a>
+    </nav>
+  </article>
+</main>

@@ -1,4 +1,4 @@
-import { RouterLink } from '@angular/router';
+import { ActivatedRoute, RouterLink } from '@angular/router';
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { I18n, Translate } from '../../../../../shared/application/i18n';
 
@@ -11,4 +11,9 @@ import { I18n, Translate } from '../../../../../shared/application/i18n';
 })
 export class AuthLayout {
   readonly i18n = inject(I18n);
+  constructor() {
+    // The landing page sends its language (?lang=es|en) so the visitor keeps it.
+    const language = inject(ActivatedRoute).snapshot.queryParamMap.get('lang');
+    if (language && language !== this.i18n.locale()) this.i18n.setLocale(language);
+  }
 }

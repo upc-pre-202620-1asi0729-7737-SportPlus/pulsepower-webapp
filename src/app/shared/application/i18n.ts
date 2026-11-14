@@ -17,6 +17,7 @@ export type TranslationKey =
   | 'community'
   | 'settings'
   | 'assistant'
+  | 'simulator'
   | 'save'
   | 'cancel'
   | 'loading'
@@ -33,6 +34,11 @@ export class I18n {
   private initialization?: Promise<void>;
   private readonly language = signal<Locale>(this.savedLocale());
   readonly locale = this.language.asReadonly();
+  private readonly localeListeners = new Set<() => void>();
+  /** Runs the listener every time the language changes. */
+  onLocaleChange(listener: () => void): void {
+    this.localeListeners.add(listener);
+  }
   constructor() {
     this.document.documentElement.lang = this.locale() === 'es' ? 'es-419' : 'en';
   }
@@ -51,6 +57,13 @@ export class I18n {
       (placeholder, name: string) => values[name] ?? placeholder,
     );
   }
+  /** Translates a key with {placeholders}; numbers and text values are localized too. */
+  format(key: string, values: Readonly<Record<string, string | number>> = {}): string {
+    return this.interpolate(
+      key,
+      Object.fromEntries(Object.entries(values).map(([name, value]) => [name, this.text(value)])),
+    );
+  }
   dateFormat(format: string): string {
     return this.catalogs[this.locale()][`_date.${format}`] ?? format;
   }
@@ -59,6 +72,7 @@ export class I18n {
     this.language.set(locale);
     this.document.documentElement.lang = locale === 'es' ? 'es-419' : 'en';
     this.loader.activate(locale);
+    this.localeListeners.forEach((listener) => listener());
     try {
       this.preferences.write('pulsepower.locale', locale);
     } catch {

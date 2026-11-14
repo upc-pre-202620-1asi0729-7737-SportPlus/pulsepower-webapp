@@ -4,7 +4,7 @@ const PERSONAL_PREFIX = 'pulsepower.v1.';
 
 @Injectable({ providedIn: 'root' })
 export class BrowserStorage {
-  readonly isDemo = localStorage.getItem('pulsepower.workspace') !== 'personal';
+  readonly isDemo = localStorage.getItem('pulsepower.workspace') === 'demo';
   private readonly accountId = localStorage.getItem('pulsepower.account');
   private readonly prefix = this.isDemo
     ? 'pulsepower.demo.v1.'

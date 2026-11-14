@@ -1,0 +1,18 @@
+.guide-suggestions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 16px 0 12px;
+}
+.guide-chip {
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: var(--mint);
+  color: var(--navy);
+  padding: 6px 14px;
+  font-size: 13px;
+}
+.guide-chip:hover:not(:disabled),
+.guide-chip:focus-visible {
+  border-color: var(--turquoise);
+}

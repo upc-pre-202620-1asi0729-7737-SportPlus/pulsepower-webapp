@@ -1,0 +1,62 @@
+.simulator-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 2fr) minmax(0, 1fr);
+  gap: 20px;
+  align-items: start;
+}
+.scenario-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 12px;
+}
+.scenario {
+  display: grid;
+  gap: 6px;
+  text-align: left;
+  padding: 14px 16px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: var(--surface);
+  color: var(--navy);
+  font: inherit;
+  cursor: pointer;
+  transition:
+    border-color 0.15s,
+    background 0.15s;
+}
+.scenario span {
+  font-size: 13px;
+  color: var(--muted);
+}
+.scenario:hover:not(:disabled),
+.scenario:focus-visible {
+  border-color: var(--turquoise);
+  background: var(--mint);
+}
+.scenario:disabled {
+  opacity: 0.6;
+  cursor: progress;
+}
+.scenario-alert {
+  border-color: #f5c2bf;
+}
+.simulator-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.simulator-level {
+  font-size: 44px;
+  font-weight: 600;
+  color: var(--navy);
+  margin: 8px 0 4px;
+}
+.simulator-level small {
+  font-size: 18px;
+  color: var(--muted);
+}
+@media (max-width: 900px) {
+  .simulator-layout {
+    grid-template-columns: 1fr;
+  }
+}

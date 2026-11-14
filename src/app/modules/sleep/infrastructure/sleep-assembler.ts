@@ -27,11 +27,11 @@ export const SleepAssembler = {
       }),
       routine: routine
         ? sleepRoutine({
-          bedtime: textField(routine, 'bedtime'),
-          wakeTime: textField(routine, 'wake_time'),
-          targetHours: numberField(routine, 'target_hours'),
-          reminderEnabled: routine['reminder_enabled'] === true,
-        })
+            bedtime: textField(routine, 'bedtime'),
+            wakeTime: textField(routine, 'wake_time'),
+            targetHours: numberField(routine, 'target_hours'),
+            reminderEnabled: routine['reminder_enabled'] === true,
+          })
         : null,
     };
   },
@@ -47,11 +47,11 @@ export const SleepAssembler = {
       })),
       routine: data.routine
         ? {
-          bedtime: data.routine.bedtime,
-          wake_time: data.routine.wakeTime,
-          target_hours: data.routine.targetHours,
-          reminder_enabled: data.routine.reminderEnabled,
-        }
+            bedtime: data.routine.bedtime,
+            wake_time: data.routine.wakeTime,
+            target_hours: data.routine.targetHours,
+            reminder_enabled: data.routine.reminderEnabled,
+          }
         : null,
     };
   },

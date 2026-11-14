@@ -25,7 +25,11 @@ interface NavItem {
   icon: IconName;
   children?: { label: string; path: string }[];
 }
-const SHARED_NAV: NavItem[] = [{ path: '/home', label: 'home', icon: 'home' }];
+const SHARED_NAV: NavItem[] = [
+  { path: '/home', label: 'home', icon: 'home' },
+  { path: '/assistant', label: 'assistant', icon: 'spark' },
+  { path: '/device', label: 'simulator', icon: 'device' },
+];
 const ATHLETE_NAV: NavItem[] = [
   {
     path: '/training',
@@ -115,7 +119,8 @@ export class Layout {
   );
   readonly nav = computed<NavItem[]>(() => {
     const focus = this.profile.profile()?.focus;
-    const focusNav = focus === 'Wellness Seeker' ? WELLNESS_NAV : focus === 'Athlete' ? ATHLETE_NAV : [];
+    const focusNav =
+      focus === 'Wellness Seeker' ? WELLNESS_NAV : focus === 'Athlete' ? ATHLETE_NAV : [];
     return [...SHARED_NAV, ...focusNav, ...TRAILING_NAV];
   });
   readonly title = computed(() => {
@@ -129,6 +134,8 @@ export class Layout {
     if (path === '/subscription') return 'Subscription';
     if (path === '/settings') return 'Settings';
     if (path === '/help') return 'Help center';
+    if (path === '/assistant') return 'Recovery guide';
+    if (path === '/device') return 'simulator.title';
     if (path === '/recovery') return 'Recovery & insights';
     return (
       this.nav()

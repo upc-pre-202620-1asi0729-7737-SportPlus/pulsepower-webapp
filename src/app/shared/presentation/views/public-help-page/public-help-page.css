@@ -1,0 +1,14 @@
+.public-help-top {
+  display: flex;
+  justify-content: flex-end;
+}
+.public-help-language {
+  padding: 6px 10px;
+  border-radius: 8px;
+}
+.public-help-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 32px;
+}

@@ -128,7 +128,7 @@
 }
 .sidebar-profile small {
   display: block;
-  color: #717d94;
+  color: #8a96ab;
   font-size: 10px;
 }
 .settings-link {
@@ -145,7 +145,7 @@
   height: 40px;
   border-radius: 50%;
   background: #e1f5f2;
-  color: #22ae9f;
+  color: #0f766e;
   font-weight: 600;
   display: inline-flex;
   align-items: center;
@@ -160,6 +160,7 @@
 }
 .sidebar .avatar {
   background: #12313b;
+  color: var(--turquoise);
 }
 .workspace {
   margin-left: 220px;

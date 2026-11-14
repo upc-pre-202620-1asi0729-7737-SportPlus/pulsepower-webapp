@@ -7,13 +7,13 @@
     <div class="table-wrap">
       <table>
         <thead>
-        <tr>
-          <th>{{ 'Bedtime' | t }}</th>
-          <th>{{ 'Wake up' | t }}</th>
-          <th>{{ 'Duration' | t }}</th>
-          <th>{{ 'Source' | t }}</th>
-          <th>{{ 'Notes' | t }}</th>
-        </tr>
+          <tr>
+            <th>{{ 'Bedtime' | t }}</th>
+            <th>{{ 'Wake up' | t }}</th>
+            <th>{{ 'Duration' | t }}</th>
+            <th>{{ 'Source' | t }}</th>
+            <th>{{ 'Notes' | t }}</th>
+          </tr>
         </thead>
         <tbody>
           @for (record of records(); track record.id) {

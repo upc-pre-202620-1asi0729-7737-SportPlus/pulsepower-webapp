@@ -1,0 +1,6 @@
+import {Injectable,inject} from '@angular/core';
+import {Api,ids,reconcile} from '../../../shared/infrastructure/api';
+import {TrainingRepository} from '../application/ports/training-repository';
+import {TrainingData} from '../domain/model/training-data';
+@Injectable() export class HttpTrainingRepository extends TrainingRepository {private api=inject(Api);async load():Promise<TrainingData>{const [sessions,p]=await Promise.all([this.api.get('/training/sessions'),this.api.get('/training/plan')]);return ids({sessions,plan:{...p,period:p.periodFrom?{from:p.periodFrom,to:p.periodTo}:null}});}
+ async save(data:TrainingData){const old=await this.load();if(data.plan.period && JSON.stringify(old.plan.period)!==JSON.stringify(data.plan.period))await this.api.put('/training/plan/period',data.plan.period);await reconcile(this.api,'/training/plan/activities',old.plan.activities,data.plan.activities,async row=>{if(row.status==='Completed')return; if(row.status==='Cancelled')return this.api.post('/training/plan/activities/'+row.id+'/cancel');return this.api.put('/training/plan/activities/'+row.id,{date:row.date,startTime:row.startTime});});await reconcile(this.api,'/training/sessions',old.sessions,data.sessions);}}

@@ -20,6 +20,25 @@ export function addSleepRecord(data: SleepData, record: SleepRecord): SleepData 
   return { ...data, records: [validated, ...data.records] };
 }
 
+function wakeDay(iso: string): string {
+  const date = new Date(iso);
+  return [
+    date.getFullYear(),
+    String(date.getMonth() + 1).padStart(2, '0'),
+    String(date.getDate()).padStart(2, '0'),
+  ].join('-');
+}
+
+/** Replaces the night that ends on the same day, as a wearable synchronization does. */
+export function replaceNight(data: SleepData, record: SleepRecord): SleepData {
+  const validated = sleepRecord(record);
+  const day = wakeDay(validated.endedAt);
+  return addSleepRecord(
+    { ...data, records: data.records.filter((row) => wakeDay(row.endedAt) !== day) },
+    validated,
+  );
+}
+
 export function emptySleep(): SleepData {
   return { records: [], routine: null };
 }

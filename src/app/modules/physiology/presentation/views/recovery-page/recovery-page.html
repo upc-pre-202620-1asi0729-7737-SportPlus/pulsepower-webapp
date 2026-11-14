@@ -2,10 +2,10 @@
   [title]="'Recovery & insights' | t"
   [description]="'Connect your signals to understand your body.' | t"
   [eyebrow]="'PHYSIOLOGICAL ANALYSIS' | t"
-><span class="badge" [class.green]="store.connection()?.status === 'Connected'"
-><pp-icon name="device" />
-  {{ store.connection()?.status ?? 'Wearable not connected' | t }}</span
-></pp-page-heading
+  ><span class="badge" [class.green]="store.connection()?.status === 'Connected'"
+    ><pp-icon name="device" />
+    {{ store.connection()?.status ?? 'Wearable not connected' | t }}</span
+  ></pp-page-heading
 >
 <pp-feedback [error]="store.error()" [message]="store.message()" />
 @if (workspace.mode === 'demo') {
@@ -27,26 +27,26 @@
     "
     icon="pulse"
   /><pp-metric-card
-  [label]="'RESTING HEART RATE' | t"
-  [value]="store.restingHeartRate()?.value ?? '—'"
-  unit="bpm"
-  [detail]="
+    [label]="'RESTING HEART RATE' | t"
+    [value]="store.restingHeartRate()?.value ?? '—'"
+    unit="bpm"
+    [detail]="
       (workspace.mode === 'demo' ? 'Illustrative measurement' : 'Latest synchronized measurement')
         | t
     "
-  icon="wellness"
-/><pp-metric-card
-  [label]="'RECOVERY' | t"
-  [value]="store.assessment()?.level ?? '—'"
-  unit="%"
-  [detail]="
+    icon="wellness"
+  /><pp-metric-card
+    [label]="'RECOVERY' | t"
+    [value]="store.assessment()?.level ?? '—'"
+    unit="%"
+    [detail]="
       (workspace.mode === 'demo'
         ? 'Recovery simulation'
         : 'Calculated from your physiological history'
       ) | t
     "
-  icon="spark"
-/>
+    icon="spark"
+  />
 </div>
 <div class="grid-2 mt">
   <section class="panel">
@@ -81,31 +81,31 @@
         (ngSubmit)="deviceForm.valid && store.deviceScenario(outcome, battery)"
       >
         <mat-form-field appearance="outline" subscriptSizing="dynamic" class="field"
-        ><mat-label>{{ 'Device simulation' | t }}</mat-label
-        ><mat-select name="outcome" [(ngModel)]="outcome">
-          <mat-option value="success">{{ 'Connected' | t }}</mat-option>
-          <mat-option value="denied">{{ 'Authorization denied' | t }}</mat-option>
-          <mat-option value="error">{{ 'Pending synchronization' | t }}</mat-option>
-          <mat-option value="disconnected">{{ 'Disconnected' | t }}</mat-option>
-        </mat-select></mat-form-field
+          ><mat-label>{{ 'Device simulation' | t }}</mat-label
+          ><mat-select name="outcome" [(ngModel)]="outcome">
+            <mat-option value="success">{{ 'Connected' | t }}</mat-option>
+            <mat-option value="denied">{{ 'Authorization denied' | t }}</mat-option>
+            <mat-option value="error">{{ 'Pending synchronization' | t }}</mat-option>
+            <mat-option value="disconnected">{{ 'Disconnected' | t }}</mat-option>
+          </mat-select></mat-form-field
         >
         <mat-form-field appearance="outline" subscriptSizing="dynamic" class="field mt"
-        ><mat-label>{{ 'Battery (%)' | t }}</mat-label
-        ><input
-          matInput
-          name="battery"
-          type="number"
-          min="0"
-          max="100"
-          required
-          [(ngModel)]="battery" /></mat-form-field
+          ><mat-label>{{ 'Battery (%)' | t }}</mat-label
+          ><input
+            matInput
+            name="battery"
+            type="number"
+            min="0"
+            max="100"
+            required
+            [(ngModel)]="battery" /></mat-form-field
         ><button
-        mat-button
-        class="btn secondary mt"
-        [disabled]="deviceForm.invalid || store.busy()"
-      >
-        {{ 'Apply simulated scenario' | t }}
-      </button>
+          mat-button
+          class="btn secondary mt"
+          [disabled]="deviceForm.invalid || store.busy()"
+        >
+          {{ 'Apply simulated scenario' | t }}
+        </button>
       </form>
     }
     @if (!store.available()) {
@@ -156,45 +156,16 @@
     }
   </section>
 }
-<section class="panel mt" id="assistant">
+<section class="panel mt">
   <div class="panel-heading">
     <div>
       <h2>{{ 'Recovery guide' | t }}</h2>
-      <p>{{ 'Ask about your sleep, strain and recovery.' | t }}</p>
+      <p>{{ 'assistant.moved' | t }}</p>
     </div>
-    <span class="badge purple">{{ 'Personal guidance' | t }}</span>
+    <a mat-flat-button class="btn primary" routerLink="/assistant"
+      >{{ 'assistant.open' | t }} <pp-icon name="arrow"
+    /></a>
   </div>
-  @for (message of store.conversation()?.messages ?? []; track message.id) {
-    <div class="assistant-message" [class.user-message]="message.role === 'user'">
-      <strong>{{ (message.role === 'user' ? 'You' : 'PulsePower') | t }}</strong>
-      <p>{{ message.content | t }}</p>
-    </div>
-  } @empty {
-    <pp-empty-state
-      icon="spark"
-      [title]="'Understand the story behind your numbers' | t"
-      [description]="
-        'The assistant needs a connected analysis service and authorized physiological history.' | t
-      "
-    />
-  }
-  <form class="assistant-input" (ngSubmit)="ask()">
-    <label class="sr-only" for="assistant-question">{{ 'Your question' | t }}</label
-    ><input
-    id="assistant-question"
-    name="question"
-    [(ngModel)]="question"
-    [placeholder]="'Ask about your recovery…' | t"
-    maxlength="2000"
-    [disabled]="!store.available()"
-  /><button
-    mat-flat-button
-    class="btn primary"
-    [disabled]="!store.available() || store.busy() || !question.trim()"
-  >
-    {{ 'Send' | t }} <pp-icon name="arrow" />
-  </button>
-  </form>
 </section>
 <section class="panel mt" id="alerts" [attr.aria-busy]="store.busy()">
   <div class="panel-heading">

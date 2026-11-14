@@ -7,13 +7,13 @@
     <div class="table-wrap">
       <table>
         <thead>
-        <tr>
-          <th>{{ 'Date' | t }}</th>
-          <th>{{ 'Overall state' | t }}</th>
-          <th>{{ 'Stress' | t }}</th>
-          <th>{{ 'Discomfort' | t }}</th>
-          <th>{{ 'Notes' | t }}</th>
-        </tr>
+          <tr>
+            <th>{{ 'Date' | t }}</th>
+            <th>{{ 'Overall state' | t }}</th>
+            <th>{{ 'Stress' | t }}</th>
+            <th>{{ 'Discomfort' | t }}</th>
+            <th>{{ 'Notes' | t }}</th>
+          </tr>
         </thead>
         <tbody>
           @for (row of checkIns(); track row.id) {
