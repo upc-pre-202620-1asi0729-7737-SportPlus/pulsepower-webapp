@@ -10,7 +10,7 @@ PulsePower es una plataforma de SportPlus que ayuda a organizar el entrenamiento
 - Completar registros de bienestar, hábitos y ejercicios de respiración.
 - Generar lecturas de una pulsera en **Dispositivo simulado** (noches, entrenamientos, estrés, batería o una semana completa).
 - Consultar tu nivel de recuperación, las alertas y las recomendaciones calculadas con tus registros.
-- Preguntar al **asistente** sobre tu sueño, entrenamiento, estrés y recuperación. El backend responde con los datos de tu cuenta y rechaza temas ajenos a la plataforma.
+- Preguntar al **asistente** sobre tu sueño, entrenamiento, estrés y recuperación. El backend responde con los datos de tu cuenta y rechaza temas ajenos a la plataforma. También puedes generar una **rutina de entrenamiento** personalizada con IA que se guarda automáticamente en tu plan de actividades.
 - Generar reportes PDF y explorar las funciones de comunidad y suscripción en modo demostración.
 - Consultar el centro de ayuda sin iniciar sesión; el resto de la plataforma requiere una sesión.
 
