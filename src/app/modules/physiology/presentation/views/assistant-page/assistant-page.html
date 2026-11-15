@@ -53,3 +53,34 @@
     </button>
   </form>
 </section>
+<section class="panel" id="routine-generator">
+  <div class="panel-heading">
+    <h2>{{ 'Generate a training routine' | t }}</h2>
+    <span class="badge green">{{ 'AI powered' | t }}</span>
+  </div>
+  @if (store.routineResult(); as result) {
+    <div class="routine-result">
+      <p>{{ result.message }}</p>
+      <p class="routine-meta">{{ result.activitiesCreated }} {{ 'activities added to your training plan' | t }}</p>
+    </div>
+  }
+  <div class="routine-input">
+    <label for="routine-preferences">{{ 'Preferences (optional)' | t }}</label>
+    <input
+      id="routine-preferences"
+      [ngModel]="routinePreferences()"
+      (ngModelChange)="routinePreferences.set($event)"
+      [placeholder]="'E.g. I want to focus on cardio, I have 45 min per day…' | t"
+      maxlength="500"
+      [disabled]="!store.available()"
+    />
+    <button
+      mat-flat-button
+      class="btn primary"
+      [disabled]="!store.available() || store.busy()"
+      (click)="generateRoutine()"
+    >
+      {{ 'Generate routine' | t }} <pp-icon name="spark" />
+    </button>
+  </div>
+</section>

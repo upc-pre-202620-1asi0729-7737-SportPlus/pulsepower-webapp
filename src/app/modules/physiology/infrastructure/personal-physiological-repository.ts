@@ -12,6 +12,9 @@ import { PhysiologicalOverviewDto } from './physiological-overview.dto';
 @Injectable()
 export class PersonalPhysiologicalRepository extends LocalRecoveryRepository {
   private readonly assistantApi = inject(Api);
+  override async generateRoutine(preferences: string): Promise<{ message: string; activitiesCreated: number }> {
+    return this.assistantApi.post<{ message: string; activitiesCreated: number }>('/assistant/routines', { preferences });
+  }
   override async ask(conversation: AssistantConversation | null, message: string): Promise<AssistantConversation> {
     const response = await this.assistantApi.post<{answer:string}>('/assistant/messages', {message});
     const createdAt = this.clock.now().toISOString();

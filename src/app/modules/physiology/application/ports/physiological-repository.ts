@@ -13,4 +13,7 @@ export abstract class PhysiologicalRepository {
     conversation: AssistantConversation | null,
     message: string,
   ): Promise<AssistantConversation>;
+  async generateRoutine(_preferences: string): Promise<{ message: string; activitiesCreated: number }> {
+    throw new Error('Routine generation is not available in this workspace.');
+  }
 }

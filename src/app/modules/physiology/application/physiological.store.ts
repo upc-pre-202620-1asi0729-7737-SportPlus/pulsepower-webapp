@@ -50,4 +50,11 @@ export class PhysiologicalStore extends ActionState {
       this.conversationState.set(await this.repository.ask(this.conversation(), valid));
     });
   }
+  private readonly routineResultState = signal<{ message: string; activitiesCreated: number } | null>(null);
+  readonly routineResult = this.routineResultState.asReadonly();
+  generateRoutine(preferences: string): Promise<boolean> {
+    return this.execute(async () => {
+      this.routineResultState.set(await this.repository.generateRoutine(preferences));
+    }, 'Routine generated successfully.');
+  }
 }

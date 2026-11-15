@@ -24,6 +24,7 @@ export class AssistantPage {
     'guide.suggestion.stress',
     'guide.suggestion.plans',
   ];
+  readonly routinePreferences = signal('');
   constructor() {
     void this.store.load();
   }
@@ -32,5 +33,8 @@ export class AssistantPage {
   }
   async askSuggestion(key: string): Promise<void> {
     await this.store.ask(this.i18n.text(key));
+  }
+  async generateRoutine(): Promise<void> {
+    await this.store.generateRoutine(this.routinePreferences());
   }
 }
