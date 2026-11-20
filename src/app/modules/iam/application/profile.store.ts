@@ -28,7 +28,7 @@ export class ProfileStore extends ActionState {
     return this.execute(async () => {
       const profile = userProfile({ ...command, goals: this.profile()?.goals ?? [] });
       await this.repository.save(profile);
-      this.state.set(profile);
+      this.state.set(await this.repository.load());
     }, 'Profile updated.');
   }
   addGoal(description: string): Promise<boolean> {
@@ -47,7 +47,7 @@ export class ProfileStore extends ActionState {
         ],
       };
       await this.repository.save(next);
-      this.state.set(next);
+      this.state.set(await this.repository.load());
     }, 'Goal added.');
   }
   toggleGoal(id: string): Promise<boolean> {
@@ -61,7 +61,7 @@ export class ProfileStore extends ActionState {
         ),
       };
       await this.repository.save(next);
-      this.state.set(next);
+      this.state.set(await this.repository.load());
     }, 'Goal updated.');
   }
 }

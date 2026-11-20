@@ -841,5 +841,6 @@
   "Log sleep": "Log sleep",
   "Log training": "Log training",
   "Log wellness": "Log wellness",
-  "Simulated device": "Simulated device"
+  "Simulated device": "Simulated device",
+  "The assistant needs a connected analysis service and authorized physiological history.": "The assistant answers with the records of your account."
 }

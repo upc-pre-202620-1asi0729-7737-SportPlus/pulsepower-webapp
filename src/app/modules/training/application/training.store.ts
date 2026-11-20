@@ -33,7 +33,7 @@ export class TrainingStore extends ActionState {
     return this.execute(async () => {
       const next = { ...this.data(), plan: setPlanPeriod(this.data().plan, from, to) };
       await this.repository.save(next);
-      this.data.set(next);
+      this.data.set(await this.repository.load());
     });
   }
   readonly today = this.clock.today();
@@ -104,7 +104,7 @@ export class TrainingStore extends ActionState {
     return this.execute(async () => {
       const next = recordSession(this.data(), { ...command, id: this.clock.id() });
       await this.repository.save(next);
-      this.data.set(next);
+      this.data.set(await this.repository.load());
     }, 'Training session saved.');
   }
   /** Saves a session measured by the wearable, replacing that day's unplanned sessions. */
@@ -116,7 +116,7 @@ export class TrainingStore extends ActionState {
         plannedActivityId: null,
       });
       await this.repository.save(next);
-      this.data.set(next);
+      this.data.set(await this.repository.load());
     }, 'Training session saved.');
   }
   async planActivity(command: ActivityCommand, acceptOverlap = false): Promise<boolean> {
@@ -136,7 +136,7 @@ export class TrainingStore extends ActionState {
         plan: { ...this.data().plan, activities: [...this.activities(), activity] },
       };
       await this.repository.save(next);
-      this.data.set(next);
+      this.data.set(await this.repository.load());
     }, 'Activity added to your plan.');
   }
   async cancelActivity(id: string): Promise<boolean> {
@@ -154,7 +154,7 @@ export class TrainingStore extends ActionState {
         },
       };
       await this.repository.save(next);
-      this.data.set(next);
+      this.data.set(await this.repository.load());
     }, 'Activity cancelled.');
   }
   async reschedule(
@@ -189,7 +189,7 @@ export class TrainingStore extends ActionState {
         },
       };
       await this.repository.save(next);
-      this.data.set(next);
+      this.data.set(await this.repository.load());
     }, 'Activity rescheduled.');
   }
 }

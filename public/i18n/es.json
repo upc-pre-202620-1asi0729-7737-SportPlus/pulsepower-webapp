@@ -841,5 +841,6 @@
   "Log sleep": "Registrar sueño",
   "Log training": "Registrar entrenamiento",
   "Log wellness": "Registrar bienestar",
-  "Simulated device": "Dispositivo simulado"
+  "Simulated device": "Dispositivo simulado",
+  "The assistant needs a connected analysis service and authorized physiological history.": "El asistente responde con los registros de tu cuenta."
 }

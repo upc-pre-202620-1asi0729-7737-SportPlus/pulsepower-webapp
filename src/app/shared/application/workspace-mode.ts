@@ -5,7 +5,7 @@ import { BrowserPreferences } from './ports/browser-preferences';
 export class WorkspaceMode {
   private readonly preferences = inject(BrowserPreferences);
   readonly mode =
-    this.preferences.read('pulsepower.workspace') === 'personal' ? 'personal' : 'demo';
+    this.preferences.read('pulsepower.workspace') === 'demo' ? 'demo' : 'personal';
   setMode(mode: string): void {
     if (mode !== 'demo' && mode !== 'personal') return;
     this.preferences.write('pulsepower.workspace', mode);
